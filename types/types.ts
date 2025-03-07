@@ -20,6 +20,7 @@ export enum MatchStatus {
 }
 
 export type User = {
+    token: any;
     id: string;
     email: string;
     role?: UserRole;

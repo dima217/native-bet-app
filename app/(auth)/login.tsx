@@ -29,9 +29,6 @@ type FormValues = {
       const verifyToken = async () => {
         try {
           await checkAuth();
-          if (user) {
-            router.replace('/(app)/profile');
-          }
         } catch (error) {
           console.log('Auth check failed');
         }
@@ -79,7 +76,6 @@ type FormValues = {
         control={control}
         name="email"
         label="Email"
-        icon="email"
         placeholder="your@email.com"
         rules={{
           required: 'Email is required',
@@ -95,7 +91,6 @@ type FormValues = {
         control={control}
         name="password"
         label="Password"
-        icon="lock"
         placeholder="••••••••"
         secureTextEntry
         rules={{
@@ -115,7 +110,6 @@ type FormValues = {
           <CustomButton
             title="Sign In"
             onPress={handleSubmit(handleAuth)}
-            icon="login"
             style={styles.mainButton}
           />
           

@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
-import { AuthProvider } from '../contexts/AuthContext';
-import { useColorScheme } from '../hooks/useColorScheme';
-import { Colors } from '../constants/Colors';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme() || 'light';
@@ -19,8 +19,8 @@ export default function RootLayout() {
           },
         }}
       >
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        <Stack.Screen name="matches" options={{ headerShown: false }} />
+        <Stack.Screen name="bets" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );

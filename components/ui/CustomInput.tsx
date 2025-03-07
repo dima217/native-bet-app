@@ -7,12 +7,11 @@ type InputProps = TextInputProps & {
   name: string;
   label?: string;
   error?: string; 
-  icon?: string;
   rules?: any;
 };
 
 const CustomInput = forwardRef<TextInput, InputProps>(
-  ({ control, name, label, error, icon, rules, ...props }, ref) => {
+  ({ control, name, label, error, rules, ...props }, ref) => {
     return (
       <View style={styles.container}>
         {label && <Text style={styles.label}>{label}</Text>}

@@ -1,11 +1,18 @@
-import { FlatList, StyleSheet, RefreshControl } from 'react-native';
-import { ThemedView } from '../components/ui/ThemedView';
-import { ThemedText } from '../components/ui/ThemedText';
-import  MatchCard  from '../components/MatchCard';
-import  useMatches  from '../hooks/useMatches';
+import { FlatList, StyleSheet, RefreshControl, Button } from 'react-native';
+import { ThemedView } from '../../components/ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import  MatchCard  from '../../components/MatchCard';
+import { useAuth } from '../../hooks/useAuth';
+import  useMatches  from '../../hooks/useMatches';
+import { useEffect } from 'react';
 
-export const MatchesScreen = () => {
+export default function MatchesScreen() {
+  const { user, logout } = useAuth();
   const { matches, loading, error, refreshMatches } = useMatches();
+
+  useEffect(() => {
+    if (user) refreshMatches();
+  }, [user]);
 
   return (
     <ThemedView style={styles.container}>
@@ -28,6 +35,11 @@ export const MatchesScreen = () => {
           </ThemedText>
         }
       />
+       <ThemedView style={styles.container}>
+            <ThemedText type="title">Profile</ThemedText>
+            <ThemedText>Email: {user?.email}</ThemedText>
+            <Button title="Logout" onPress={logout} />
+        </ThemedView>
     </ThemedView>
   );
 };

@@ -3,7 +3,7 @@ import { ThemedText } from '../components/ui/ThemedText';
 import { Bet } from '../types/types';
 import { ThemedView } from './ui/ThemedView';
 
-export const BetCard = ({ bet }: { bet: Bet }) => {
+export default function BetCard({ bet }: { bet: Bet }) {
 
   return (
     <ThemedView style={styles.card}>

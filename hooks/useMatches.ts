@@ -1,32 +1,27 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Match } from '../types/types';
-import api from '../api/api';
+import api from "@/api/api";
+import { Match } from "@/types/types";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useMatches() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const fetchMatches = async () => {
+  const fetchMatches = useCallback(async () => {
     setLoading(true);
-    setError('');
     try {
       const response = await api.get('/matches');
       setMatches(response.data);
     } catch (err) {
-      setError('Match loading error!');
+      setError('Failed to load matches');
     } finally {
       setLoading(false);
     }
-  };
-
-  const refreshMatches = useCallback(() => {
-    fetchMatches();
   }, []);
 
   useEffect(() => {
     fetchMatches();
-  }, []);
+  }, [fetchMatches]);
 
-  return { matches, loading, error, refreshMatches };
+  return { matches, loading, error, refreshMatches: fetchMatches };
 }

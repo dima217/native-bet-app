@@ -1,5 +1,5 @@
 // app/contexts/AuthContext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { storeToken, getToken, removeToken } from '../utils/storage';

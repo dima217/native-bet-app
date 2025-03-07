@@ -5,12 +5,16 @@ import  CustomButton from '../components/ui/CustomButton';
 import  CustomInput from '../components/ui/CustomInput';
 import { useState } from 'react';
 import { Match } from '../types/types';
-import useUserBets from '../hooks/useUserBets';
+import { useUserBets } from '../hooks/useUserBets';
 
 import { useForm } from 'react-hook-form';
 
+type FormData = {
+  amount: string;
+};
+
 export const BetModal = ({ visible, onClose, match }: { visible: boolean; onClose: () => void; match: Match }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [selectedOutcome, setSelectedOutcome] = useState<'1' | 'X' | '2'>();
   const [loading, setLoading] = useState(false);
   const { placeBet } = useUserBets();

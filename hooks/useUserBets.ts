@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Bet } from '../types/types';
 import api from '../api/api';
 
-export default function useUserBets() {
+export const useUserBets = () => {
   const [bets, setBets] = useState<Bet[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -42,16 +42,12 @@ export default function useUserBets() {
     }
   };
 
-  const refreshBets = useCallback(() => {
-    fetchUserBets();
-  }, []);
-
   return {
     bets,
     loading,
     error,
     placeBet,
     cancelBet,
-    refreshBets,
+    refreshBets: fetchUserBets,
   };
 }
