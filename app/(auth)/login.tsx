@@ -114,7 +114,7 @@ type FormValues = {
           />
           
           <TouchableOpacity 
-            onPress={() => router.push('/(auth)/register')}
+            onPress={() => router.replace('/(auth)/register')}
             style={styles.linkContainer}
           >
             <ThemedText style={styles.linkText}>

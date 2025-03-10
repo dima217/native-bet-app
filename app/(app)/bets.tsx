@@ -5,6 +5,7 @@ import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
 import BetCard from '@/components/BetCard';
 import { useUserBets } from '../../hooks/useUserBets';
+import CustomButton from '@/components/ui/CustomButton';
 
 export default function MyBetsScreen() {
   const { user, logout } = useAuth();
@@ -43,7 +44,7 @@ export default function MyBetsScreen() {
           }
         />
       )}
-        <Button title="Logout" onPress={logout} />
+        <CustomButton title="Logout" onPress={logout} />
     </ThemedView>
   );
 }

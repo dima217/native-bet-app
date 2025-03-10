@@ -10,6 +10,7 @@ export default function RootLayout() {
     <AuthProvider>
       <Stack
         screenOptions={{
+          animation: "slide_from_right",
           headerShown: false,
           headerStyle: {
             backgroundColor: Colors[colorScheme].background,

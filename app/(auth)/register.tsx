@@ -35,7 +35,7 @@ export default function RegisterScreen() {
         balance: Number(data.balance)
       });
       await new Promise(resolve => setTimeout(resolve, 300));
-      router.replace('/(app)/profile');
+      router.replace('/(app)/matches');
     } catch (err) {
       let errorMessage = 'Registration failed';
       if (err instanceof Error) {
@@ -134,7 +134,7 @@ export default function RegisterScreen() {
       />
       
       <TouchableOpacity 
-        onPress={() => router.push('/(auth)/login')}
+        onPress={() => router.replace('/(auth)/login')}
         style={styles.linkContainer}
       >
         <ThemedText style={styles.linkText}>

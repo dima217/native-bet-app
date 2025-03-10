@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   useEffect(() => {
     if (user) {
-      router.replace('/(app)/profile');
+      router.replace('/(app)/bets');
     }
   }, [user]);
 
@@ -84,7 +84,7 @@ const login = async (email: string, password: string) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userData);
     
-    router.replace('/(app)/profile');
+    router.replace('/(app)/bets');
   } catch (error) {
     let errorMessage = 'Invalid credentials';
     if (axios.isAxiosError(error)) {

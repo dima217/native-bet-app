@@ -19,6 +19,13 @@ export enum MatchStatus {
   CANCELED = 'cancelled',
 }
 
+export enum BetStatus {
+  WIN = 'win',
+  LOSE = 'lose',
+  DURING = 'during',
+  CANCELED = 'canceled',
+}
+
 export type User = {
     token: any;
     id: string;
@@ -30,6 +37,7 @@ export type User = {
     id: number;
     amount: number;
     team: string;
+    status: BetStatus;
     match: {
       id: number;
       teamA: string;
