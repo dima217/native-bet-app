@@ -1,5 +1,5 @@
 // app/contexts/AuthContext.tsx
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { storeToken, getToken, removeToken } from '../utils/storage';
@@ -17,7 +17,10 @@ type AuthContextType = {
     balance: number;
   }) => Promise<void>;
   logout: () => Promise<void>;
-   checkAuth: () => Promise<void>;
+  checkAuth: () => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  error: string | null;
+  resetError: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -26,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     axios.defaults.baseURL = API_URL;
@@ -36,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    axios.interceptors.response.use(
+    const interceptor = axios.interceptors.response.use(
       response => response,
       async error => {
         if (error.response?.status === 401) {
@@ -46,9 +50,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return Promise.reject(error);
       }
     );
+    
+    return () => axios.interceptors.response.eject(interceptor);
   }, []);
 
-  const checkAuth = async () => {
+  const resetError = useCallback(() => {
+    setError(null);
+  }, []);
+
+  const checkAuth = useCallback(async () => {
     setIsLoading(true);
     try {
       const token = await getToken();
@@ -65,73 +75,88 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
-  
-  useEffect(() => {
-    if (user) {
+  }, []);
+
+  const login = useCallback(async (email: string, password: string) => {
+    setIsLoading(true);
+    resetError();
+    try {
+      const response = await axios.post('/auth/login', { email, password });
+      const { token, ...userData } = response.data;
+
+      await storeToken(token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(userData);
       router.replace('/(app)/bets');
+    } catch (error) {
+      let errorMessage = 'Invalid credentials';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error.message;
+      }
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-  }, [user]);
+  }, []);
 
-const login = async (email: string, password: string) => {
-  try {
-    const response = await axios.post('/auth/login', { email, password });
-    const { token, ...userData } = response.data; 
-
-    console.log('Received token:', token);
-    
-    await storeToken(token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(userData);
-    
-    router.replace('/(app)/bets');
-  } catch (error) {
-    let errorMessage = 'Invalid credentials';
-    if (axios.isAxiosError(error)) {
-      errorMessage = error.response?.data?.message || error.message;
+  const register = useCallback(async (data: {
+    username: string;
+    email: string;
+    password: string;
+    balance: number;
+  }) => {
+    setIsLoading(true);
+    resetError();
+    try {
+      const response = await axios.post('/users', data);
+      await storeToken(response.data.token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      setUser(response.data.user);
+      router.replace('/(app)/bets');
+    } catch (error) {
+      let errorMessage = 'Registration failed';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error.message;
+      }
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-    throw new Error(errorMessage);
-  }
-};
+  }, []);
 
-  const register = async (data: {
-  username: string;
-  email: string;
-  password: string;
-  balance: number;
-}) =>  { try {
-    const response = await axios.post('/users', data);
-    
-    await storeToken(response.data.token);
-    
-    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-    
-    setUser(response.data.user); 
-    
-  } catch (error) {
-    let errorMessage = 'Registration failed';
-    
-    if (axios.isAxiosError(error)) {
-      errorMessage = error.response?.data?.message || error.message;
-    } else if (error instanceof Error) {
-      errorMessage = error.message;
-    }
-    
-    console.error('Registration error:', errorMessage);
-    throw new Error(errorMessage);
-  }
-};
-
-  const logout = async () => {
+  const logout = useCallback(async () => {
+    setIsLoading(true);
     try {
       await removeToken();
       delete axios.defaults.headers.common['Authorization'];
       setUser(null);
       router.replace('/(auth)/login');
     } catch (error) {
-      throw new Error('Logout failed. Please try again');
+      setError('Logout failed. Please try again');
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
+
+  const forgotPassword = useCallback(async (email: string) => {
+    setIsLoading(true);
+    resetError();
+    try {
+      await axios.post('/auth/forgot-password', { email: email });
+    } catch (error) {
+      let errorMessage = 'Failed to send reset instructions';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error.message;
+      }
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -142,6 +167,9 @@ const login = async (email: string, password: string) => {
         register,
         logout,
         checkAuth,
+        forgotPassword,
+        error,
+        resetError,
       }}
     >
       {children}

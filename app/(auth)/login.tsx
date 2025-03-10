@@ -122,6 +122,15 @@ type FormValues = {
               <ThemedText style={styles.link}>Sign Up</ThemedText>
             </ThemedText>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+            onPress={() => router.push('/(auth)/forgot')}
+            style={styles.forgotPassword}
+          >
+              <ThemedText style={styles.forgotPasswordText}>
+                 Forgot Password?
+              </ThemedText>
+          </TouchableOpacity>
         </>
       )}
     </ThemedView>
@@ -179,5 +188,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
     color: '#999',
+  },
+  forgotPassword: {
+    marginTop: 15,
+    alignSelf: 'center',
+  },
+  forgotPasswordText: {
+    color: '#4A90E2',
+    textDecorationLine: 'underline',
   },
 });

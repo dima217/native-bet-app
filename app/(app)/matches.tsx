@@ -1,13 +1,14 @@
-import { FlatList, StyleSheet, RefreshControl, Button } from 'react-native';
-import { ThemedView } from '../../components/ui/ThemedView';
-import { ThemedText } from '../../components/ui/ThemedText';
-import  MatchCard  from '../../components/MatchCard';
-import { useAuth } from '../../hooks/useAuth';
-import  useMatches  from '../../hooks/useMatches';
+import { FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { ThemedView } from '@/components/ui/ThemedView';
+import { ThemedText } from '@/components/ui/ThemedText';
+import MatchCard from '@/components/MatchCard';
+import { useAuth } from '@/hooks/useAuth';
+import useMatches  from '@/hooks/useMatches';
 import { useEffect } from 'react';
+import NavigationTabs from '@/components/NavigationTabs';
 
 export default function MatchesScreen() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { matches, loading, error, refreshMatches } = useMatches();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function MatchesScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Active Matches</ThemedText>
+      <ThemedText type="title" style={styles.title}>Active Matches</ThemedText>
       
       <FlatList
         data={matches}
@@ -31,23 +32,25 @@ export default function MatchesScreen() {
         }
         ListEmptyComponent={
           <ThemedText style={styles.empty}>
-            {error || 'No access matches'}
+            {error || 'No available matches'}
           </ThemedText>
         }
       />
-       <ThemedView style={styles.container}>
-            <ThemedText type="title">Profile</ThemedText>
-            <ThemedText>Email: {user?.email}</ThemedText>
-            <Button title="Logout" onPress={logout} />
-        </ThemedView>
+      
+      <NavigationTabs currentScreen="matches" />
     </ThemedView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingBottom: 80,
+  },
+  title: {
+    marginBottom: 20,
+    fontSize: 24,
   },
   list: {
     paddingBottom: 24,

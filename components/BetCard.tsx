@@ -2,10 +2,13 @@ import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '../components/ui/ThemedText';
 import { Bet } from '../types/types';
 import { ThemedView } from './ui/ThemedView';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function BetCard({ bet }: { bet: Bet }) {
+  const cardBackground = useThemeColor({}, 'cardBackground');
+  
   return (
-    <ThemedView style={styles.card}>
+    <ThemedView style={[styles.card, { backgroundColor: cardBackground }]}>
       <View style={styles.header}>
         <ThemedText style={styles.title}>Bet Details</ThemedText>
       </View>

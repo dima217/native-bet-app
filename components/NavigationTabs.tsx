@@ -1,45 +1,89 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
-import { useAuth } from '@/hooks/useAuth';
-import CustomButton from '@/components/ui/CustomButton';
+import { Colors } from '@/constants/Colors';
 
-type Tab = 'matches' | 'bets';
+type Tab = 'matches' | 'bets' | 'profile';
 
 export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }) {
-  const { logout } = useAuth();
+  const theme = useColorScheme() || 'light';
   const router = useRouter();
 
+  const themeColors = {
+    background: Colors[theme].background,
+    border: Colors[theme].border,
+    tabText: Colors[theme].text,
+    activeTab: Colors[theme].tint,
+  };
+
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[
+      styles.container,
+      {
+        backgroundColor: themeColors.background,
+        borderTopColor: themeColors.border,
+      }
+    ]}>
       <TouchableOpacity
-        style={[styles.tab, currentScreen === 'matches' && styles.activeTab]}
+        style={[
+          styles.tab,
+          currentScreen === 'matches' && {
+            backgroundColor: themeColors.activeTab,
+          }
+        ]}
         onPress={() => router.replace('/(app)/matches')}
       >
         <ThemedText 
-          style={[styles.tabText, currentScreen === 'matches' && styles.activeText]}
+          style={[
+            styles.tabText,
+            currentScreen === 'matches' && styles.activeText,
+            { color: themeColors.tabText }
+          ]}
         >
           Matches
         </ThemedText>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.tab, currentScreen === 'bets' && styles.activeTab]}
-        onPress={() => router.push('/(app)/bets')}
+        style={[
+          styles.tab,
+          currentScreen === 'bets' && {
+            backgroundColor: themeColors.activeTab,
+          }
+        ]}
+        onPress={() => router.replace('/(app)/bets')}
       >
         <ThemedText 
-          style={[styles.tabText, currentScreen === 'bets' && styles.activeText]}
+          style={[
+            styles.tabText,
+            currentScreen === 'bets' && styles.activeText,
+            { color: themeColors.tabText }
+          ]}
         >
           My Bets
         </ThemedText>
       </TouchableOpacity>
 
-      <CustomButton 
-        title="Logout" 
-        onPress={logout}
-        style={styles.logoutButton}
-      />
+      <TouchableOpacity
+        style={[
+          styles.tab,
+          currentScreen === 'profile' && {
+            backgroundColor: themeColors.activeTab,
+          }
+        ]}
+        onPress={() => router.replace('/(app)/profile')}
+      >
+        <ThemedText 
+          style={[
+            styles.tabText,
+            currentScreen === 'profile' && styles.activeText,
+            { color: themeColors.tabText }
+          ]}
+        >
+          Profile
+        </ThemedText>
+      </TouchableOpacity>
     </ThemedView>
   );
 }
@@ -51,8 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-    backgroundColor: '#f5f5f5',
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -62,24 +104,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
   },
-  activeTab: {
-    backgroundColor: '#4A90E2',
-  },
   tabText: {
     fontSize: 16,
-    color: '#666',
+    fontWeight: '500',
   },
   activeText: {
     color: '#fff',
-    fontWeight: '500',
-  },
-  logoutButton: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 12,
-  },
-  logoutText: {
-    color: '#ff4444',
-    fontSize: 14,
-    fontWeight: '500',
   },
 });

@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { Match } from "@/types/types";
+import { Match, MatchStatus } from "@/types/types";
 import { useCallback, useEffect, useState } from "react";
 
 export default function useMatches() {
@@ -11,7 +11,10 @@ export default function useMatches() {
     setLoading(true);
     try {
       const response = await api.get('/matches');
-      setMatches(response.data);
+      const pendingMatches = response.data.filter(
+        (match: Match) => match.status === MatchStatus.SCHEDULED
+      );
+      setMatches(pendingMatches);
     } catch (err) {
       setError('Failed to load matches');
     } finally {

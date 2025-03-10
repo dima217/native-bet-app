@@ -1,14 +1,13 @@
-// screens/MyBetsScreen.tsx
-import { FlatList, StyleSheet, RefreshControl, ActivityIndicator, Button } from 'react-native';
+import { FlatList, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
 import BetCard from '@/components/BetCard';
-import { useUserBets } from '../../hooks/useUserBets';
-import CustomButton from '@/components/ui/CustomButton';
+import { useUserBets } from '@/hooks/useUserBets';
+import NavigationTabs from '@/components/NavigationTabs';
 
 export default function MyBetsScreen() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { bets, loading, error, refreshBets } = useUserBets();
 
   if (!user) {
@@ -17,11 +16,11 @@ export default function MyBetsScreen() {
         <ThemedText type="title">Not authorized</ThemedText>
       </ThemedView>
     );
-  } 
+  }
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">My bets</ThemedText>
+      <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
       
       {loading ? (
         <ActivityIndicator size="large" style={styles.loader} />
@@ -39,19 +38,26 @@ export default function MyBetsScreen() {
           }
           ListEmptyComponent={
             <ThemedText style={styles.empty}>
-              {error || 'You have not got any bets yet'}
+              {error || 'You have no active bets'}
             </ThemedText>
           }
         />
       )}
-        <CustomButton title="Logout" onPress={logout} />
+      
+      <NavigationTabs currentScreen="bets" />
     </ThemedView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingBottom: 80,
+  },
+  title: {
+    marginBottom: 20,
+    fontSize: 24,
   },
   list: {
     paddingBottom: 24,
