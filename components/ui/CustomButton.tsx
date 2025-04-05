@@ -27,7 +27,7 @@ export default function CustomButton({
   const theme = useColorScheme();
   
   const baseColors = {
-    primary: theme === 'dark' ? '#6200ee' : '#4A90E2',
+    primary: theme === 'dark' ? '#0166FE' : '#4A90E2',
     secondary: '#FF5A5F',
     outline: 'transparent',
   };
@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 8,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 8,
+    height: 50,
   },
   text: {
     fontSize: 16,

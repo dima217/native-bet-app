@@ -5,6 +5,7 @@ import axios from 'axios';
 import { storeToken, getToken, removeToken } from '../utils/storage';
 import { API_URL } from '../config';
 import { User } from '../types/types';
+import { usePathname } from 'expo-router';
 
 type AuthContextType = {
   user: User | null;
@@ -30,14 +31,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const pathname = usePathname(); 
 
   useEffect(() => {
     axios.defaults.baseURL = API_URL;
   }, []);
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
@@ -76,6 +75,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    checkAuth();
+  }, [pathname]);
 
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
@@ -141,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const forgotPassword = useCallback(async (email: string) => {
+  const forgotPassword = async (email: string) => {
     setIsLoading(true);
     resetError();
     try {
@@ -156,7 +159,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }
 
   return (
     <AuthContext.Provider

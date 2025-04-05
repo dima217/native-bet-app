@@ -27,10 +27,11 @@ export enum BetStatus {
 }
 
 export type User = {
-    token: any;
     id: string;
     email: string;
-    role?: UserRole;
+    username: string,
+    balance: number,
+    role: UserRole;
   };
 
   export type Bet = {

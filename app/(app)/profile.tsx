@@ -21,14 +21,14 @@ export default function ProfileScreen() {
 
         <View style={styles.infoContainer}>
           <ThemedText style={[styles.label, { color: textColor }]}>Name:</ThemedText>
-          <ThemedText style={styles.info}>In the next episode..</ThemedText>
+          <ThemedText style={styles.info}>{user?.username}</ThemedText>
 
           <ThemedText style={[styles.label, { color: textColor }]}>Email:</ThemedText>
           <ThemedText style={styles.info}>{user?.email}</ThemedText>
 
           <ThemedText style={[styles.label, { color: textColor }]}>Balance:</ThemedText>
           <ThemedText type="defaultSemiBold" style={styles.balance}>
-          In the next episode..
+          {user?.balance}
           </ThemedText>
         </View>
 

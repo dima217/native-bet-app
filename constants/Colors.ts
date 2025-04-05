@@ -11,9 +11,10 @@ export const Colors = {
   },
 
   dark: {
-    textSecondary: "#666666",
-    border: "#E5E5E5",
-    background: '#121212',
+    textSecondary: "#E5E5E5",
+    border: "#666666",
+    background: '#090C15',
+    gradientBackground: ['#001F41', '#090C15'] as const, 
     text: '#ffffff',
     primary: '#8b9dc3',
     error: '#c0392b',

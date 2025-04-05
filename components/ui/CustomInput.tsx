@@ -25,7 +25,7 @@ const CustomInput = forwardRef<TextInput, InputProps>(
               <TextInput
                 ref={ref}
                 style={styles.input}
-                placeholderTextColor="#999"
+                placeholderTextColor="#E5E5E5"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -53,12 +53,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 20,
     paddingHorizontal: 15,
     height: 50,
   },
   label: {
-    color: '#666',
+    color: '#E5E5E5',
     fontSize: 14,
     marginBottom: 8,
     fontWeight: '500',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: '#E5E5E5',
     paddingVertical: 0, 
   },
   icon: {

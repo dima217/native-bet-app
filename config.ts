@@ -1,1 +1,1 @@
-export const API_URL = 'https://dimapikull.edu.andarrr.co.uk'; 
+export const API_URL = 'https://dimapikull2.edu.andarrr.co.uk'; 
