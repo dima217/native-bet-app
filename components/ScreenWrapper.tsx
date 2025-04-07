@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   View,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '@/constants/Colors';
@@ -29,35 +25,23 @@ export default function ScreenWrapper({ children, withScroll = true }: Props) {
       style={styles.gradient}
     >
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
+      
+      <Container
+        contentContainerStyle={withScroll ? styles.scrollContainer : undefined}
+        keyboardShouldPersistTaps="handled"
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Container
-            style={styles.flex}
-            contentContainerStyle={withScroll ? styles.scrollContainer : undefined}
-            keyboardShouldPersistTaps="handled"
-          >
-            {children}
-          </Container>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+        {children}
+      </Container>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
   gradient: {
     flex: 1,
   },
   scrollContainer: {
     flexGrow: 1,
-    padding: 20,
+    paddingTop: 20,
   },
 });
