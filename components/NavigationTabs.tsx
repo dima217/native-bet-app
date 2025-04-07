@@ -1,95 +1,76 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
-import { ThemedText } from '@/components/ui/ThemedText';
+import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { Colors } from '@/constants/Colors';
+import Trophy from '../assets/images/Trophy.svg';
+import Berger from '../assets/images/Burger.svg';
+import User from '../assets/images/User.svg';
+import Swords from '../assets/images/Swords.svg';
 
-type Tab = 'matches' | 'bets' | 'profile';
+type Tab = 'matches' | 'bets' | 'profile' | 'menu';
 
 export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }) {
   const theme = useColorScheme() || 'light';
   const router = useRouter();
 
   const themeColors = {
-    background: Colors[theme].background,
-    border: Colors[theme].border,
-    tabText: Colors[theme].text,
-    activeTab: Colors[theme].tint,
+    background: Colors[theme].tab,
+    border: Colors[theme].borderTab,
+    iconColor: Colors[theme].text,
   };
 
+  const tabs = [
+    {
+      key: 'matches',
+      icon: (isActive: boolean) => <Trophy width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      route: '/(app)/matches',
+    },
+    {
+      key: 'bets',
+      icon: (isActive: boolean) => <Swords width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      route: '/(app)/bets',
+    },
+    {
+      key: 'menu',
+      icon: (isActive: boolean) => <Berger width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      route: '/(app)/profile',
+    },
+    {
+      key: 'profile',
+      icon: (isActive: boolean) => <User width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      route: '/(app)/profile',
+    },
+  ] as const;
+
   return (
-    <ThemedView style={[
-      styles.container,
-      {
-        backgroundColor: themeColors.background,
-        borderTopColor: themeColors.border,
-      }
-    ]}>
-      <TouchableOpacity
-        style={[
-          styles.tab,
-          currentScreen === 'matches' && {
-            backgroundColor: themeColors.activeTab,
-          }
-        ]}
-        onPress={() => router.replace('/(app)/matches')}
-      >
-        <ThemedText 
-          style={[
-            styles.tabText,
-            currentScreen === 'matches' && styles.activeText,
-            { color: themeColors.tabText }
-          ]}
-        >
-          Matches
-        </ThemedText>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.tab,
-          currentScreen === 'bets' && {
-            backgroundColor: themeColors.activeTab,
-          }
-        ]}
-        onPress={() => router.replace('/(app)/bets')}
-      >
-        <ThemedText 
-          style={[
-            styles.tabText,
-            currentScreen === 'bets' && styles.activeText,
-            { color: themeColors.tabText }
-          ]}
-        >
-          My Bets
-        </ThemedText>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.tab,
-          currentScreen === 'profile' && {
-            backgroundColor: themeColors.activeTab,
-          }
-        ]}
-        onPress={() => router.replace('/(app)/profile')}
-      >
-        <ThemedText 
-          style={[
-            styles.tabText,
-            currentScreen === 'profile' && styles.activeText,
-            { color: themeColors.tabText }
-          ]}
-        >
-          Profile
-        </ThemedText>
-      </TouchableOpacity>
+    <ThemedView
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeColors.background,
+          borderTopColor: themeColors.border,
+        },
+      ]}
+    >
+      {tabs.map((tab) => {
+        const isActive = currentScreen === tab.key;
+        return (
+          <TouchableOpacity
+            key={tab.key}
+            style={styles.tab}
+            onPress={() => router.replace(tab.route)}
+          >
+            <View>{tab.icon(isActive)}</View>
+          </TouchableOpacity>
+        );
+      })}
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: 83,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -102,13 +83,6 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10,
-    borderRadius: 8,
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  activeText: {
-    color: '#fff',
+    borderRadius: 12,
   },
 });

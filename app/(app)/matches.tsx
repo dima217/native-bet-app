@@ -16,7 +16,8 @@ export default function MatchesScreen() {
   }, [user]);
 
   return (
-    <> <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+    <> 
+    <StatusBar barStyle="light-content" translucent backgroundColor='#000000' />
     
     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>Active Matches</ThemedText>
@@ -34,7 +35,8 @@ export default function MatchesScreen() {
         </ThemedText>} />
 
       <NavigationTabs currentScreen="matches" />
-    </ThemedView></>
+    </ThemedView>
+    </>
   );
 }
 
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingTop: 25,
-    paddingBottom: 80,
+    paddingBottom: 83,
   },
   title: {
     marginBottom: 20,

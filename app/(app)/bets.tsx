@@ -19,29 +19,36 @@ export default function MyBetsScreen() {
   }
 
   return (
-     <> <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-     
-     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
+    <>
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
 
-      {loading ? (
-        <ActivityIndicator size="large" style={styles.loader} />
-      ) : (
-        <FlatList
-          data={bets}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <BetCard bet={item} />}
-          contentContainerStyle={styles.list}
-          refreshControl={<RefreshControl
-            refreshing={loading}
-            onRefresh={refreshBets} />}
-          ListEmptyComponent={<ThemedText style={styles.empty}>
-            {error || 'You have no active bets'}
-          </ThemedText>} />
-      )}
+        {loading ? (
+          <ActivityIndicator size="large" style={styles.loader} />
+        ) : (
+          <FlatList
+            data={bets}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <BetCard bet={item} />}
+            contentContainerStyle={styles.list}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={refreshBets}
+              />
+            }
+            ListEmptyComponent={
+              <ThemedText style={styles.empty}>
+                {error || 'You have no active bets'}
+              </ThemedText>
+            }
+          />
+        )}
 
-      <NavigationTabs currentScreen="bets" />
-    </ThemedView> </>
+        <NavigationTabs currentScreen="bets" />
+      </ThemedView>
+    </>
   );
 }
 
