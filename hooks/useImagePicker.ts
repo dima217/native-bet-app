@@ -13,19 +13,16 @@ export const useImagePicker = () => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:  ['images', 'videos'],
+      mediaTypes: ['images'],
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets.length > 0) {
       setImage(result.assets[0].uri);
     }
   };
 
-  return {
-    image,
-    pickImage,
-  };
+  return { image, pickImage, setImage };
 };

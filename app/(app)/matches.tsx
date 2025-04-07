@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { FlatList, StyleSheet, RefreshControl, StatusBar } from 'react-native';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
 import MatchCard from '@/components/MatchCard';
@@ -16,29 +16,25 @@ export default function MatchesScreen() {
   }, [user]);
 
   return (
+    <> <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+    
     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>Active Matches</ThemedText>
-      
+
       <FlatList
         data={matches}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <MatchCard match={item} />}
         contentContainerStyle={styles.list}
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-            onRefresh={refreshMatches}
-          />
-        }
-        ListEmptyComponent={
-          <ThemedText style={styles.empty}>
-            {error || 'No available matches'}
-          </ThemedText>
-        }
-      />
-      
+        refreshControl={<RefreshControl
+          refreshing={loading}
+          onRefresh={refreshMatches} />}
+        ListEmptyComponent={<ThemedText style={styles.empty}>
+          {error || 'No available matches'}
+        </ThemedText>} />
+
       <NavigationTabs currentScreen="matches" />
-    </ThemedView>
+    </ThemedView></>
   );
 }
 
@@ -46,6 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 25,
     paddingBottom: 80,
   },
   title: {

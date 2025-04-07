@@ -53,14 +53,6 @@ export default function RegisterScreen() {
 
   return (
     <ScreenWrapper>
-    <LinearGradient
-      colors={Colors.dark.gradientBackground}
-      start={{ x: 1, y: 0.1 }}
-      end={{ x: 0.9, y: 0.9 }}
-      locations={[0.3, 0.8]}
-      style={styles.container} 
-    >
-    
     <ThemedView style={styles.innerContainer}>
     
     <Logo width={223} height={96} style={styles.image}/>
@@ -119,7 +111,6 @@ export default function RegisterScreen() {
           <ThemedText style={styles.link}>Terms and Conditions</ThemedText>
         </ThemedText>
       </TouchableOpacity>
-    </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -128,7 +119,7 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 25,
+    padding: 45,
     paddingTop: 0,
   },
 

@@ -25,6 +25,7 @@
     "@react-navigation/native-stack": "^7.2.0",
     "@react-navigation/routers": "^7.1.2",
     "@react-navigation/stack": "^7.1.1",
+    "@shopify/react-native-skia": "1.5.0",
     "axios": "^1.7.9",
     "expo": "^52.0.44",
     "expo-asset": "^11.0.5",

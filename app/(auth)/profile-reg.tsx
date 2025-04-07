@@ -7,6 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { FieldError, useForm } from "react-hook-form";
 import { useState } from "react";
 import CustomButton from '../../components/ui/CustomButton';
+import { ImagePickerButton } from "@/components/ui/ImagePickerButton";
+import { useImagePicker } from '../../hooks/useImagePicker';
+import { StyleSheet } from 'react-native';
 
 type FormData = {
     username: string;
@@ -19,6 +22,7 @@ export default function ProfileRegScreen() {
     const { register: signUp, isLoading } = useAuth();
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [error, setError] = useState('');
+    const { image, pickImage } = useImagePicker();
 
     const getErrorMessage = (error: FieldError | undefined): string | undefined => {
         return error?.message;
@@ -26,11 +30,15 @@ export default function ProfileRegScreen() {
     
     return (
     <ScreenWrapper>
-    <ThemedView>
-     <ThemedText>
+    <ThemedView style={styles.innerContainer}>
+     <ThemedText type="title" style={styles.text} >
          Let's get started 
      </ThemedText>
 
+     <ImagePickerButton
+        onPress={pickImage}
+        image={image}
+     />
         <CustomInput
         control={control}
         label="Name"
@@ -58,16 +66,23 @@ export default function ProfileRegScreen() {
         title="Enter"
         onPress={handleSubmit(onSubmit)}
         loading={isLoading}
-        style={styles.button}
         />
 
-        </ThemedView>
-        </ScreenWrapper>
+    </ThemedView>
+    </ScreenWrapper>
     )
 }
 
-const styles = {
-    button: {
-        marginTop: 25,
+const styles = StyleSheet.create({
+    innerContainer: { 
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'transparent', 
+        padding: 45,
+    },
+
+    text: {
+        alignSelf: 'center',
+        marginBottom: 25,
     }
-}
+});

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, RefreshControl, ActivityIndicator, StatusBar } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,9 +19,11 @@ export default function MyBetsScreen() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+     <> <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+     
+     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
-      
+
       {loading ? (
         <ActivityIndicator size="large" style={styles.loader} />
       ) : (
@@ -30,22 +32,16 @@ export default function MyBetsScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <BetCard bet={item} />}
           contentContainerStyle={styles.list}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={refreshBets}
-            />
-          }
-          ListEmptyComponent={
-            <ThemedText style={styles.empty}>
-              {error || 'You have no active bets'}
-            </ThemedText>
-          }
-        />
+          refreshControl={<RefreshControl
+            refreshing={loading}
+            onRefresh={refreshBets} />}
+          ListEmptyComponent={<ThemedText style={styles.empty}>
+            {error || 'You have no active bets'}
+          </ThemedText>} />
       )}
-      
+
       <NavigationTabs currentScreen="bets" />
-    </ThemedView>
+    </ThemedView> </>
   );
 }
 
