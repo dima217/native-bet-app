@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import useMatches  from '@/hooks/useMatches';
 import { useEffect } from 'react';
 import NavigationTabs from '@/components/NavigationTabs';
+import BaseHeader from '@/components/BaseHeader';
 
 export default function MatchesScreen() {
   const { user } = useAuth();
@@ -20,7 +21,9 @@ export default function MatchesScreen() {
     <StatusBar barStyle="light-content" translucent backgroundColor='#000000' />
     
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Play</ThemedText>
+      <BaseHeader
+        label='Play'
+      />
 
       <FlatList
         data={matches}
