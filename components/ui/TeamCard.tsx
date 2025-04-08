@@ -15,7 +15,7 @@ export default function TeamCard({ team, index = 1 }: Props) {
       <View
         style={[
           styles.teamContainer,
-          index === 1 ? styles.teamFirstCard : styles.teamSecCard,
+
           { flexDirection: index === 1 ? "row" : "row-reverse" }
         ]}
       >
@@ -28,19 +28,20 @@ export default function TeamCard({ team, index = 1 }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'transparent',
     flex: 1,
+    padding: 5,
   },
   teamContainer: {
+    height: 58,
+    backgroundColor: 'transparent',
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
+    padding: 10,
     borderRadius: 8,
+    borderColor: 'white',
     borderWidth: 1,
-  },
-  teamFirstCard: {
+    gap: 10,
     justifyContent: 'flex-end'
-  },
-  teamSecCard: {
-     justifyContent: 'flex-start'
-  },
+  }
 });

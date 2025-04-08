@@ -7,6 +7,9 @@ import { useState } from 'react';
 import CustomButton from './ui/CustomButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import MatchLine from './ui/MatchLine';
+import Clock from '../assets/images/clock 1.svg'
+import { center } from '@shopify/react-native-skia';
 
 export default function MatchCard({ match }: { match: Match }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,40 +31,27 @@ export default function MatchCard({ match }: { match: Match }) {
           </ThemedText>
         </View>
 
-        <View style={styles.teamsContainer}>
-          <ThemedText type="defaultSemiBold" style={styles.team}>
-            {match.teamA}
-          </ThemedText>
-          <ThemedText type="default" style={styles.vsText}>VS</ThemedText>
-          <ThemedText type="defaultSemiBold" style={styles.team}>
-            {match.teamB}
-          </ThemedText>
-        </View>
-
-        <View style={[styles.divider, { backgroundColor: borderColor }]} />
-
-        <View style={styles.detailsContainer}>
-          <View style={styles.detailItem}>
-            <Ionicons name="calendar" size={16} color={iconColor} />
-            <ThemedText style={styles.detailText}>
-              {new Date(match.date).toLocaleDateString()}
-            </ThemedText>
-          </View>
-          <View style={styles.detailItem}>
-            <Ionicons name="time" size={16} color={iconColor} />
-            <ThemedText style={styles.detailText}>
-              {new Date(match.date).toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              })}
-            </ThemedText>
-          </View>
-        </View>
-
-        <CustomButton
-          title="Place a Bet"
-          onPress={() => setModalVisible(true)}
+        <MatchLine 
+        teamA={match.teamA}
+        teamB={match.teamB}
         />
+
+      <View
+      style={
+        styles.footer
+      }
+      >
+        <View
+        style={
+          styles.time
+        }
+        >
+          <Clock width={12} height={12}/>
+          <ThemedText>
+            30sec
+          </ThemedText>
+        </View>
+      </View>
       </ThemedView>
 
       <BetModal
@@ -74,11 +64,26 @@ export default function MatchCard({ match }: { match: Match }) {
 }
 
 const styles = StyleSheet.create({
+  time: {
+    marginTop: 20,
+    backgroundColor: 'black',
+    width: 88,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    height: 25,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 3,
+  },
   card: {
-    padding: 20,
-    borderRadius: 16,
+    height: 165,
+    padding: 5,
+    paddingBottom: 0,
+    borderRadius: 8,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     borderWidth: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -92,6 +97,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
     gap: 12,
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   sportTitle: {
     letterSpacing: 1,
@@ -108,43 +118,15 @@ const styles = StyleSheet.create({
     maxWidth: '40%',
     textAlign: 'center',
   },
-  vsText: {
-    fontSize: 12,
-    color: '#888',
-    marginHorizontal: 8,
-  },
+
   divider: {
     height: 1,
     marginVertical: 12,
     opacity: 0.3,
   },
-  detailsContainer: {
-    gap: 10,
-    marginBottom: 20,
-  },
-  detailItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  detailText: {
-    fontSize: 14,
-    color: '#666',
-  },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: 'transparent',
     borderRadius: 12,
     paddingVertical: 14,
-    shadowColor: '#007AFF',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-    marginLeft: 8,
   },
 });

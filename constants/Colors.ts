@@ -23,6 +23,6 @@ export const Colors = {
     primary: '#8b9dc3',
     error: '#c0392b',
     tint: '#6200ee',
-    cardBackground: '#2C2C2E'
+    cardBackground: '#191B28'
   },
 };

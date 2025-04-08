@@ -4,13 +4,13 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet } from 'react-native';
 import { center } from "@shopify/react-native-skia";
 import { ThemedText } from '../../app-example/components/ThemedText';
+import TeamCard from './TeamCard';
 
 type Props = {
-    sportType: SportType,
     teamA: string,
     teamB: string,
 }
-export default function MatchLine({sportType, teamA, teamB} : Props) {
+export default function MatchLine({teamA, teamB} : Props) {
     const cardColor = useThemeColor({}, 'cardBackground');
 
     return (
@@ -20,19 +20,30 @@ export default function MatchLine({sportType, teamA, teamB} : Props) {
             { backgroundColor: cardColor }
           ]}
         >
-        <ThemedText>
+        <TeamCard
+        team={teamA}
+        index={1}
+         />
+        <ThemedText
+          type="subtitle"
+        >
             VS
         </ThemedText>
-        
+        <TeamCard
+        team={teamB}
+        index={2}
+         />
         </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
     lineStile: {
+        height: 58,
+        backgroundColor: 'transparent',
         display: 'flex',
         flexDirection: 'row',
         flex: 1,
-        padding: 20,
-    }
+        alignItems: 'center'
+,    },
 })

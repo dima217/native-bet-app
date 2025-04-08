@@ -20,7 +20,7 @@ export default function MatchesScreen() {
     <StatusBar barStyle="light-content" translucent backgroundColor='#000000' />
     
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Active Matches</ThemedText>
+      <ThemedText type="title" style={styles.title}>Play</ThemedText>
 
       <FlatList
         data={matches}
