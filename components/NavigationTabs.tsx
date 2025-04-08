@@ -2,8 +2,8 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { Colors } from '@/constants/Colors';
-import Trophy from '../assets/images/Trophy.svg';
-import Berger from '../assets/images/Burger.svg';
+import Trophy from '../assets/images/trophy1.svg';
+import Burger from '../assets/images/burger1.svg';
 import User from '../assets/images/User.svg';
 import Swords from '../assets/images/Swords.svg';
 
@@ -32,7 +32,7 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
     },
     {
       key: 'menu',
-      icon: (isActive: boolean) => <Berger width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      icon: (isActive: boolean) => <Burger width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
       route: '/(app)/profile',
     },
     {
