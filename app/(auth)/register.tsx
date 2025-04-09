@@ -127,7 +127,7 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'transparent', 
-    padding: 20,
+    padding: 45,
   },
 
   image: {

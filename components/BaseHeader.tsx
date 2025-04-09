@@ -1,5 +1,5 @@
 import { ThemedText } from "@/app-example/components/ThemedText";
-import MoneyBag from '../../assets/images/Money bag.svg'
+import MoneyBag from '../assets/images/Money bag.svg'
 import { ThemedView } from "./ui/ThemedView";
 import { StyleSheet } from "react-native";
 

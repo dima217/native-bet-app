@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { ThemedText } from './ui/ThemedText';
-import LeagueOfLegendsIcon from '../assets/games/league-of-legends.svg';
-import CounterStrikeIcon from '../assets/games/counter-strike.svg';
-import ValorantIcon from '../assets/games/valorant.svg';
+import LeagueOfLegendsIcon from '../assets/images/Group.svg';
+import CounterStrikeIcon from '../assets/images/CS logo.svg';
+import ValorantIcon from '../assets/images/valorant-seeklogo.com 1.svg';
 import { SvgProps } from 'react-native-svg';
 
 type GameItem = {
@@ -50,11 +50,16 @@ export default function GamesScroll() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 20,
+    height: 60,
   },
   item: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
     alignItems: 'center',
-    marginRight: 32,
+    marginRight: 18,
   },
   title: {
     marginTop: 8,
