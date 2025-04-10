@@ -51,8 +51,8 @@ export default function ProfileScreen() {
         />
 
         <CustomButton
-          title="Logout"
-          onPress={logout}
+          title="Link other accounts"
+          onPress={() => navigation.navigate("linkAccounts")}
         />
     </ThemedView>
 

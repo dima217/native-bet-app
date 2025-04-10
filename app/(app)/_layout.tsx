@@ -23,6 +23,7 @@ export default function RootLayout() {
         <Stack.Screen name="settings" options={{ headerShown: false }} />
         <Stack.Screen name="bets" options={{ headerShown: false }} />
         <Stack.Screen name="editProfile" options={{ headerShown: false }} />
+        <Stack.Screen name="linkAccounts" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );
