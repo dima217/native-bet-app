@@ -36,7 +36,8 @@ export default function BaseHeader({label} : Props) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 15,
+        marginTop: 45,
+        marginHorizontal: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',

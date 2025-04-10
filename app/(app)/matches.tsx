@@ -23,8 +23,9 @@ export default function MatchesScreen() {
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
       
+      <BaseHeader label="Play" />
+
       <ThemedView style={styles.container}>
-        <BaseHeader label="Play" />
 
         <GamesScroll />
 
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 25,
+    paddingTop: 5,
     paddingBottom: 83,
   },
   filterContainer: {

@@ -7,7 +7,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 import CustomAvatar from '@/components/ui/CustomAvatar';
-import { center } from '@shopify/react-native-skia';
+import { router } from 'expo-router';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -16,23 +16,19 @@ export default function ProfileScreen() {
   const buttonColor = useThemeColor({}, 'error');
 
   return (
-    <>
+  <>
     <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
 
-    <View style={styles.header}>
     <BaseHeader
         label='My account'
      />
-     </View>
 
      <View style={styles.avatar}>
       <CustomAvatar
         size={64}
       />
     </View>
-
-  <ThemedView style={[styles.container, { backgroundColor }]}>
-
+    <ThemedView style={[styles.container, { backgroundColor }]}>
         <View style={styles.infoContainer}>
           <ThemedText style={styles.info}>{user?.username}</ThemedText>
 
@@ -41,7 +37,7 @@ export default function ProfileScreen() {
 
         <CustomButton
           title="Setting"
-          onPress={logout}
+          onPress={() => router.replace('/(app)/settings')}
         />
         <CustomButton
           title="Edit Profile"
@@ -52,18 +48,28 @@ export default function ProfileScreen() {
           title="Logout"
           onPress={logout}
         />
+    </ThemedView>
 
-        <CustomButton
+    <CustomButton
           title="Logout"
           onPress={logout}
-        />
-      <NavigationTabs currentScreen="profile" />
-    </ThemedView>
-   </>
+          style={styles.button}
+      />
+
+    <NavigationTabs currentScreen="profile" />
+  </>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginBottom: 125,
+    marginHorizontal: 45,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#0166FE'
+  },
+
   container: {
     paddingHorizontal: 45,
     marginTop: 8,
@@ -72,11 +78,6 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    marginTop: 25,
-  },
-
-  header: {
-    margin: 12,
     marginTop: 25,
   },
 
