@@ -7,20 +7,26 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 import CustomAvatar from '@/components/ui/CustomAvatar';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
+import { navigate } from 'expo-router/build/global-state/routing';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/types/navigationTypes';
+
+type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const buttonColor = useThemeColor({}, 'error');
+  const navigation = useNavigation<NavigationProps>();
 
   return (
   <>
     <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
 
     <BaseHeader
-        label='My account'
+        label='My account' 
      />
 
      <View style={styles.avatar}>
@@ -37,11 +43,11 @@ export default function ProfileScreen() {
 
         <CustomButton
           title="Setting"
-          onPress={() => router.replace('/(app)/settings')}
+          onPress={() => navigation.navigate("settings")}
         />
         <CustomButton
           title="Edit Profile"
-          onPress={logout}
+          onPress={() => navigation.navigate("editProfile")}
         />
 
         <CustomButton

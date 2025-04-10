@@ -11,7 +11,10 @@ export default function SettingsScreen() {
     <>
     <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
 
-    <BaseHeader label="Settings"/>
+    <BaseHeader 
+    label="Settings"
+    goBack={true}
+    />
 
     <View style={styles.switchContainer}>
       <View style={styles.wrapper}>
@@ -33,7 +36,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
     switchContainer: {
-        marginVertical: 150,
+        marginVertical: 35,
         marginHorizontal: 20
     },
     wrapper: {
