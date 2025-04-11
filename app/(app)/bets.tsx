@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import BetCard from '@/components/BetCard';
 import { useUserBets } from '@/hooks/useUserBets';
 import NavigationTabs from '@/components/NavigationTabs';
+import BaseHeader from '@/components/BaseHeader';
 
 export default function MyBetsScreen() {
   const { user } = useAuth();
@@ -21,6 +22,10 @@ export default function MyBetsScreen() {
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+
+      <BaseHeader
+      label='My votes'
+      />
       <ThemedView style={styles.container}>
         <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
 

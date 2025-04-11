@@ -3,23 +3,51 @@ import { ThemedText } from '../components/ui/ThemedText';
 import { Bet } from '../types/types';
 import { ThemedView } from './ui/ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import MatchLine from './ui/MatchLine';
 
 export default function BetCard({ bet }: { bet: Bet }) {
   const cardBackground = useThemeColor({}, 'cardBackground');
-  
+
+  const getStatusStyle = () => {
+    if (bet.status === 'win') return styles.win;
+    if (bet.status === 'lose') return styles.lose;
+    return styles.active;
+  };
+
+  const getAmountColor = () => {
+    if (bet.status === 'win') return styles.amountWin;
+    if (bet.status === 'lose') return styles.amountLose;
+    return styles.amountNeutral;
+  };
+
   return (
     <ThemedView style={[styles.card, { backgroundColor: cardBackground }]}>
-      <View style={styles.header}>
-        <ThemedText style={styles.title}>Bet Details</ThemedText>
+      <View style={styles.topRow}>
+        <View style={[styles.statusBadge, getStatusStyle()]}>
+          <ThemedText style={styles.statusText}>
+            {bet.status === 'win' && 'Win'}
+            {bet.status === 'lose' && 'Lose'}
+            {bet.status === 'active' && 'Active'}
+          </ThemedText>
+        </View>
       </View>
 
-      <View style={styles.details}>
-        <ThemedText style={styles.label}>Amount:</ThemedText>
-        <ThemedText style={styles.amount}>${bet.amount}</ThemedText>
-      </View>
+      <ThemedText style={styles.tournament}>
+        {bet.match.date} 
+      </ThemedText>
 
-      <View style={[styles.status, bet.status === 'win' ? styles.win : styles.lose]}>
-        <ThemedText style={styles.statusText}>{bet.status.toUpperCase()}</ThemedText>
+      <MatchLine
+        teamA={bet.match.teamA}
+        teamB={bet.match.teamB}
+      />
+
+      <View style={styles.footer}>
+        <ThemedText style={styles.dateText}>{bet.match.date}</ThemedText>
+        <ThemedText style={[styles.amountText, getAmountColor()]}>
+          {bet.status === 'win' && `+ ${bet.amount} gg`}
+          {bet.status === 'lose' && `- ${bet.amount} gg`}
+          {bet.status === 'active' && `${bet.amount} gg`}
+        </ThemedText>
       </View>
     </ThemedView>
   );
@@ -27,7 +55,6 @@ export default function BetCard({ bet }: { bet: Bet }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#2C2C2E',
     padding: 16,
     borderRadius: 12,
     marginVertical: 8,
@@ -38,48 +65,56 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
   },
-  header: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.2)',
-    paddingBottom: 8,
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  details: {
+  topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 8,
   },
-  label: {
-    color: '#A1A1A1',
-    fontSize: 14,
-  },
-  amount: {
-    color: '#FFD700',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  status: {
-    alignSelf: 'center',
+  statusBadge: {
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 4,
     borderRadius: 20,
-    marginTop: 8,
-  },
-  win: {
-    backgroundColor: 'rgba(76, 175, 80, 0.8)',
-  },
-  lose: {
-    backgroundColor: 'rgba(244, 67, 54, 0.8)',
   },
   statusText: {
-    color: 'white',
-    fontSize: 14,
+    color: '#fff',
     fontWeight: 'bold',
+  },
+  win: {
+    backgroundColor: '#FFD700',
+  },
+  lose: {
+    backgroundColor: '#D32F2F',
+  },
+  active: {
+    backgroundColor: '#388E3C',
+  },
+  streak: {
+    color: '#FFD700',
+    fontWeight: '600',
+  },
+  tournament: {
+    color: '#aaa',
+    fontSize: 12,
+    marginVertical: 4,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dateText: {
+    color: '#888',
+  },
+  amountText: {
+    fontWeight: 'bold',
+  },
+  amountWin: {
+    color: '#FFD700',
+  },
+  amountLose: {
+    color: '#F44336',
+  },
+  amountNeutral: {
+    color: '#aaa',
   },
 });

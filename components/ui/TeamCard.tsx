@@ -3,18 +3,23 @@ import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { View } from "react-native";
 import Swords from "../../assets/images/Icon.svg";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 type Props = {
   team: string;
   index: number;
 };
 
+
 export default function TeamCard({ team, index = 1 }: Props) {
+  const cardBorder = useThemeColor({}, 'border');
+  
   return (
     <ThemedView style={styles.container}>
       <View
         style={[
           styles.teamContainer,
+          {borderColor: cardBorder},
 
           { flexDirection: index === 1 ? "row" : "row-reverse" }
         ]}
@@ -39,7 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     borderRadius: 8,
-    borderColor: 'white',
     borderWidth: 1,
     gap: 10,
     justifyContent: 'flex-end'

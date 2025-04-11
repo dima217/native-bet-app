@@ -11,14 +11,14 @@ import MatchLine from './ui/MatchLine';
 import Clock from '../assets/images/clock 1.svg'
 import { center } from '@shopify/react-native-skia';
 
-export default function MatchCard({ match }: { match: Match }) {
+export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
   const [modalVisible, setModalVisible] = useState(false);
   const iconColor = useThemeColor({}, 'tint');
   const cardColor = useThemeColor({}, 'cardBackground');
   const borderColor = useThemeColor({}, 'border');
 
   return (
-    <>
+    <TouchableOpacity onPress={onPress}>
       <ThemedView 
         style={[
           styles.card,
@@ -59,7 +59,7 @@ export default function MatchCard({ match }: { match: Match }) {
         onClose={() => setModalVisible(false)}
         match={match}
       />
-    </>
+    </TouchableOpacity>
   );
 }
 
