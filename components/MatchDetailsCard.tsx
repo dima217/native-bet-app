@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Match } from '@/types/types';
 import { ThemedView } from './ui/ThemedView';
@@ -6,6 +7,7 @@ import MatchLine from './ui/MatchLine';
 import CustomButton from './ui/CustomButton';
 import Clock from '../assets/images/clock 1.svg';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import BetKeyboard from '../components/BetKeyBoard'; 
 
 export default function MatchDetailsCard({
   match,
@@ -13,39 +15,53 @@ export default function MatchDetailsCard({
 }: {
   match: Match;
   onBack: () => void;
-})
-{
-const cardColor = useThemeColor({}, 'cardBackground');
+}) {
+  const cardColor = useThemeColor({}, 'cardBackground');
+  const [showKeyboard, setShowKeyboard] = useState(false);
 
-return (
-    <ThemedView style={[
-        styles.card,
-        { backgroundColor: cardColor }
-      ]}>
-      <View style={styles.header}>
-        <ThemedText type="subtitle">{match.sportType.toUpperCase()}</ThemedText>
-      </View>
+  return (
+    <>
+      <ThemedView style={[styles.card, { backgroundColor: cardColor }]}>
+        <View style={styles.header}>
+          <ThemedText type="subtitle">{match.sportType.toUpperCase()}</ThemedText>
+        </View>
 
-      <MatchLine teamA={match.teamA} teamB={match.teamB} />
+        <MatchLine teamA={match.teamA} teamB={match.teamB} />
 
-      <CustomButton title="Draw" onPress={() => {}} style={styles.drawButton} />
+      {showKeyboard ? (
+        <BetKeyboard 
+          onCancel={() => setShowKeyboard(false)} 
+          onConfirm={(amount) => {
+            // place bet logic here
+            console.log('Voted with', amount);
+            setShowKeyboard(false);
+          }} 
+        />
+      ) : 
+      <CustomButton 
+          title="Draw" 
+          onPress={() => setShowKeyboard(true)} 
+          style={styles.drawButton} 
+        />
+      }
 
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <ThemedText>← Back</ThemedText>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <ThemedText>← Back</ThemedText>
+        </TouchableOpacity>
 
-      <View style={styles.time}>
-        <Clock width={12} height={12} />
-        <ThemedText>{'2h 5min'}</ThemedText>
-      </View>
-    </ThemedView>
+        <View style={styles.time}>
+          <Clock width={12} height={12} />
+          <ThemedText>{'2h 5min'}</ThemedText>
+        </View>
+      </ThemedView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
-    padding: 16,
+    padding: 8,
     paddingBottom: 0,
     marginVertical: 12,
     marginHorizontal: 8,
@@ -56,6 +72,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   drawButton: {
+    borderWidth: 1,
+    borderColor: '#666C7C',
+    backgroundColor: 'transparent',
+    borderRadius: 8,
     marginVertical: 12,
   },
   time: {

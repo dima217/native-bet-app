@@ -26,6 +26,9 @@ export default function MatchLine({teamA, teamB} : Props) {
          />
         <ThemedText
           type="subtitle"
+          style={
+            styles.label
+          }
         >
             VS
         </ThemedText>
@@ -46,4 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center'
 ,    },
+      label: {
+        paddingHorizontal: 10,
+      }
 })

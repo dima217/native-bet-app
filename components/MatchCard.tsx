@@ -4,12 +4,9 @@ import { ThemedView } from './ui/ThemedView';
 import { Match } from '../types/types';
 import { BetModal } from '../components/BetModal';
 import { useState } from 'react';
-import CustomButton from './ui/CustomButton';
-import { Ionicons } from '@expo/vector-icons';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from './ui/MatchLine';
 import Clock from '../assets/images/clock 1.svg'
-import { center } from '@shopify/react-native-skia';
 
 export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
   const [modalVisible, setModalVisible] = useState(false);

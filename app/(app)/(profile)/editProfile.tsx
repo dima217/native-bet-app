@@ -18,7 +18,7 @@ type FormData = {
 export default function EditProfileScreen({ loadImage }: Props) {
 
     const defaultUri = RNImage.resolveAssetSource(
-        require("../../assets/images/Def-Ava.png")
+        require("../../../assets/images/Def-Ava.png")
     ).uri;
 
     loadImage = defaultUri;

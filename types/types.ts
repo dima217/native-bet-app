@@ -22,7 +22,7 @@ export enum MatchStatus {
 export enum BetStatus {
   WIN = 'win',
   LOSE = 'lose',
-  DURING = 'active',
+  DURING = 'during',
   CANCELED = 'canceled',
 }
 

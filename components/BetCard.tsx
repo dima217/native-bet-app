@@ -22,19 +22,19 @@ export default function BetCard({ bet }: { bet: Bet }) {
 
   return (
     <ThemedView style={[styles.card, { backgroundColor: cardBackground }]}>
-      <View style={styles.topRow}>
-        <View style={[styles.statusBadge, getStatusStyle()]}>
-          <ThemedText style={styles.statusText}>
-            {bet.status === 'win' && 'Win'}
-            {bet.status === 'lose' && 'Lose'}
-            {bet.status === 'active' && 'Active'}
-          </ThemedText>
-        </View>
+      <View style={[styles.statusBadge, getStatusStyle()]}>
+        <ThemedText style={styles.statusText}>
+          {bet.status === 'win' && 'Win'}
+          {bet.status === 'lose' && 'Lose'}
+          {bet.status === 'during' && 'Active'}
+        </ThemedText>
       </View>
 
-      <ThemedText style={styles.tournament}>
-        {bet.match.date} 
-      </ThemedText>
+      <View style={styles.headerRow}>
+        <ThemedText style={styles.tournament}>
+          {bet.match.date} 
+        </ThemedText>
+      </View>
 
       <MatchLine
         teamA={bet.match.teamA}
@@ -43,11 +43,13 @@ export default function BetCard({ bet }: { bet: Bet }) {
 
       <View style={styles.footer}>
         <ThemedText style={styles.dateText}>{bet.match.date}</ThemedText>
-        <ThemedText style={[styles.amountText, getAmountColor()]}>
-          {bet.status === 'win' && `+ ${bet.amount} gg`}
-          {bet.status === 'lose' && `- ${bet.amount} gg`}
-          {bet.status === 'active' && `${bet.amount} gg`}
-        </ThemedText>
+        <View style={[styles.amountBubble]}>
+          <ThemedText style={[styles.amountText, getAmountColor()]}>
+            {bet.status === 'win' && `+ ${bet.amount} gg`}
+            {bet.status === 'lose' && `- ${bet.amount} gg`}
+            {bet.status === 'during' && `${bet.amount} gg`}
+          </ThemedText>
+        </View>
       </View>
     </ThemedView>
   );
@@ -64,49 +66,70 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 5,
+    position: 'relative',
   },
-  topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+
+  // Статусный бейдж
   statusBadge: {
-    paddingHorizontal: 12,
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 20,
+    borderRadius: 10,
+    zIndex: 10,
   },
   statusText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 12,
   },
   win: {
-    backgroundColor: '#FFD700',
+    borderColor: '#FFD700',
   },
   lose: {
-    backgroundColor: '#D32F2F',
+    borderColor: '#D32F2F',
   },
   active: {
-    backgroundColor: '#388E3C',
+    borderWidth: 1,
+    borderColor: '#388E3C',
   },
-  streak: {
-    color: '#FFD700',
-    fontWeight: '600',
+
+  // Турнир и матч
+  headerRow: {
+    alignItems: 'flex-end',
+    marginTop: 8,
+    marginBottom: 8,
   },
   tournament: {
-    color: '#aaa',
     fontSize: 12,
-    marginVertical: 4,
+    color: '#aaa',
   },
+
+  // Низ карточки
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 8,
   },
   dateText: {
     color: '#888',
+    fontSize: 12,
+  },
+
+  // GG-ставка
+  amountBubble: {
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 20,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'transparent',
   },
   amountText: {
     fontWeight: 'bold',
+    fontSize: 14,
   },
   amountWin: {
     color: '#FFD700',
