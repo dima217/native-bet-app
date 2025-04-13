@@ -1,4 +1,4 @@
-import ScreenWrapper from "@/components/ScreenWrapper";
+import ScreenWrapper from "@/components/BaseWrappers/ScreenWrapper";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
 import CustomInput from '@/components/ui/Inputs/CustomInput';

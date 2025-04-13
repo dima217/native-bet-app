@@ -5,15 +5,17 @@ import {
   Text,
   StyleSheet,
   useColorScheme,
+  ViewStyle,
 } from 'react-native';
 
 type Props = {
   options: string[];
   selected: string;
   onSelect: (value: string) => void;
+  style?: ViewStyle;
 };
 
-export default function CustomButtonGroup({ options, selected, onSelect }: Props) {
+export default function CustomButtonGroup({ options, selected, onSelect, style }: Props) {
   const theme = useColorScheme();
   const primaryColor = theme === 'dark' ? '#0166FE' : '#4A90E2';
 
@@ -36,6 +38,9 @@ export default function CustomButtonGroup({ options, selected, onSelect }: Props
                 borderTopRightRadius: isLast ? 25 : 0,
                 borderBottomRightRadius: isLast ? 25 : 0,
               },
+              
+              style,
+
               index !== 0 && { borderLeftWidth: 1, borderLeftColor: primaryColor },
             ]}
             onPress={() => onSelect(option)}
@@ -63,7 +68,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     overflow: 'hidden',
     height: 50,
-    flex: 1,
   },
   button: {
     flex: 1,

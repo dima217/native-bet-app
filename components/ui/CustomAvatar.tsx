@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 30,
     position: "relative",
   },
   circle: {

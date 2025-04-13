@@ -27,7 +27,6 @@ export default function MyBetsScreen() {
       label='My votes'
       />
       <ThemedView style={styles.container}>
-        <ThemedText type="title" style={styles.title}>My Bets</ThemedText>
 
         {loading ? (
           <ActivityIndicator size="large" style={styles.loader} />

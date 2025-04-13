@@ -33,7 +33,7 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
     {
       key: 'menu',
       icon: (isActive: boolean) => <Burger width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
-      route: '/(app)/profile',
+      route: '/(app)/leaders',
     },
     {
       key: 'profile',

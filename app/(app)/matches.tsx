@@ -31,13 +31,15 @@ export default function MatchesScreen() {
         <GamesScroll />
 
       {!selectedMatch && (
-      <ThemedView style={styles.filterContainer}>
+
+      <View style={styles.button}>
       <CustomButtonGroup
         options={['Today', 'Tomorrow', 'This week']}
         selected={selectedFilter}
         onSelect={setSelectedFilter}
       />
-    </ThemedView>
+      </View>
+
       )}
         {selectedMatch ? (
           <View style={styles.detailsWrapper}>
@@ -83,18 +85,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 83,
   },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#0166FE',
-    borderRadius: 25,
-    overflow: 'hidden',
-    height: 40,
-    marginTop: 15,
-    marginBottom: 18,
-  },
   filterButton: {
     flex: 1,
   },
@@ -106,4 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     opacity: 0.6,
   },
+  button: {
+    marginVertical: 10
+  }
 });

@@ -10,7 +10,7 @@ import { useState } from "react";
 import { FieldError, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import Logo from '../../assets/images/Logo.svg'
-import ScreenWrapper from "@/components/ScreenWrapper";
+import ScreenWrapper from "@/components/BaseWrappers/ScreenWrapper";
 
 type FormData = {
   username: string
