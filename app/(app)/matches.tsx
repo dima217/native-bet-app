@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
   detailsWrapper: {
     position: 'absolute',
-    top: 110,
+    top: 90,
     left: 0,
     right: 0,
     zIndex: 10,

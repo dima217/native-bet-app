@@ -30,6 +30,7 @@ export default function MatchDetailsCard({
 
       {showKeyboard ? (
         <BetKeyboard 
+          style={styles.keyBoard}
           onCancel={() => setShowKeyboard(false)} 
           onConfirm={(amount) => {
             // place bet logic here
@@ -70,6 +71,9 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 16,
+  },
+  keyBoard: {
+    marginTop: 30,
   },
   drawButton: {
     borderWidth: 1,
