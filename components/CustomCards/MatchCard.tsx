@@ -1,12 +1,12 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ThemedText } from './ui/ThemedText';
-import { ThemedView } from './ui/ThemedView';
-import { Match } from '../types/types';
-import { BetModal } from '../components/BetModal';
+import { ThemedText } from '../ui/ThemedText';
+import { ThemedView } from '../ui/ThemedView';
+import { Match } from '../../types/types';
+import { BetModal } from '../../components/BetModal';
 import { useState } from 'react';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import MatchLine from './ui/MatchLine';
-import Clock from '../assets/images/clock 1.svg'
+import MatchLine from '../ui/MatchLine';
+import Clock from '../../assets/images/clock 1.svg'
 
 export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
   const [modalVisible, setModalVisible] = useState(false);

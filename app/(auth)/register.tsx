@@ -1,5 +1,5 @@
-import CustomButton from "@/components/ui/CustomButton";
-import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/Buttons/CustomButton";
+import CustomInput from "@/components/ui/Inputs/CustomInput";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
 import { Colors } from "@/constants/Colors";

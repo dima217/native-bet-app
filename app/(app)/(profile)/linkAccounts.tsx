@@ -1,5 +1,5 @@
 import BaseHeader from "@/components/BaseHeader";
-import CustomButton from "@/components/ui/CustomButton";
+import CustomButton from "@/components/ui/Buttons/CustomButton";
 import { StatusBar, StyleSheet, View, ScrollView } from "react-native";
 
 const linkOptions = [

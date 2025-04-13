@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { SkiaAvatar } from '../SkiaAvatar';
-import Camera from '../../assets/images/Camera.svg';
-import Plus from '../../assets/images/Plus.svg';
+import { SkiaAvatar } from './SkiaAvatar';
+import Camera from '../assets/images/Camera.svg';
+import Plus from '../assets/images/Plus.svg';
 
 type Props = {
   onPress: () => void;

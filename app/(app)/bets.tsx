@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, RefreshControl, ActivityIndicator, StatusBar } fr
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
-import BetCard from '@/components/BetCard';
+import BetCard from '@/components/CustomCards/BetCard';
 import { useUserBets } from '@/hooks/useUserBets';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';

@@ -1,7 +1,7 @@
 import BaseHeader from "@/components/BaseHeader";
-import CustomButton from "@/components/ui/CustomButton";
-import CustomInput from "@/components/ui/CustomInput";
-import { ImagePickerButton } from "@/components/ui/ImagePickerButton";
+import CustomButton from "@/components/ui/Buttons/CustomButton";
+import CustomInput from "@/components/ui/Inputs/CustomInput";
+import { ImagePickerButton } from "@/components/ImagePickerButton";
 import { ThemedView } from "@/components/ui/ThemedView";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { FieldError, useForm } from "react-hook-form";

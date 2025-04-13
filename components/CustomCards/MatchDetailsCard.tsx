@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Match } from '@/types/types';
-import { ThemedView } from './ui/ThemedView';
-import { ThemedText } from './ui/ThemedText';
-import MatchLine from './ui/MatchLine';
-import CustomButton from './ui/CustomButton';
-import Clock from '../assets/images/clock 1.svg';
+import { ThemedView } from '../ui/ThemedView';
+import { ThemedText } from '../ui/ThemedText';
+import MatchLine from '../ui/MatchLine';
+import CustomButton from '../ui/Buttons/CustomButton';
+import Clock from '../../assets/images/clock 1.svg';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import BetKeyboard from '../components/BetKeyBoard'; 
+import BetKeyboard from '../../components/BetKeyBoard'; 
 
 export default function MatchDetailsCard({
   match,

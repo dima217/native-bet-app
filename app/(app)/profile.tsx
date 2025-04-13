@@ -2,7 +2,7 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
-import CustomButton from '@/components/ui/CustomButton';
+import CustomButton from '@/components/ui/Buttons/CustomButton';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';

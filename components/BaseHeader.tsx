@@ -2,7 +2,7 @@ import { ThemedText } from "@/app-example/components/ThemedText";
 import MoneyBag from '../assets/images/Money bag.svg';
 import { ThemedView } from "./ui/ThemedView";
 import { StyleSheet } from "react-native";
-import { BackButton } from "./ui/BackButton";
+import { BackButton } from "./ui/Buttons/BackButton";
 
 type Props = {
   label: string;

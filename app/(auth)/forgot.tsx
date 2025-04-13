@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { ThemedText } from '../../components/ui/ThemedText';
 import { ThemedView } from '../../components/ui/ThemedView';
-import CustomButton from '../../components/ui/CustomButton';
-import CustomInput from '../../components/ui/CustomInput';
+import CustomButton from '../../components/ui/Buttons/CustomButton';
+import CustomInput from '../../components/ui/Inputs/CustomInput';
 import { useAuth } from '../../hooks/useAuth';
 
 type FormValues = {

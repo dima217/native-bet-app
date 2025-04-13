@@ -1,8 +1,8 @@
 import { Modal, StyleSheet, View } from 'react-native';
 import { ThemedText } from '../components/ui/ThemedText';
 import { ThemedView } from '../components/ui/ThemedView';
-import CustomButton from '../components/ui/CustomButton';
-import CustomInput from '../components/ui/CustomInput';
+import CustomButton from './ui/Buttons/CustomButton';
+import CustomInput from './ui/Inputs/CustomInput';
 import { useState } from 'react';
 import { Match } from '../types/types';
 import { useUserBets } from '../hooks/useUserBets';

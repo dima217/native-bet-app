@@ -1,13 +1,13 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
-import CustomInput from '@/components/ui/CustomInput';
+import CustomInput from '@/components/ui/Inputs/CustomInput';
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 import { FieldError, useForm } from "react-hook-form";
 import { useState } from "react";
-import CustomButton from '../../components/ui/CustomButton';
-import { ImagePickerButton } from "@/components/ui/ImagePickerButton";
+import CustomButton from '../../components/ui/Buttons/CustomButton';
+import { ImagePickerButton } from "@/components/ImagePickerButton";
 import { useImagePicker } from '../../hooks/useImagePicker';
 import { StyleSheet } from 'react-native';
 

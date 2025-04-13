@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
-import { ThemedText } from '../components/ui/ThemedText';
-import { Bet } from '../types/types';
-import { ThemedView } from './ui/ThemedView';
+import { ThemedText } from '../../components/ui/ThemedText';
+import { Bet } from '../../types/types';
+import { ThemedView } from '../ui/ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import MatchLine from './ui/MatchLine';
+import MatchLine from '../ui/MatchLine';
 
 export default function BetCard({ bet }: { bet: Bet }) {
   const cardBackground = useThemeColor({}, 'cardBackground');

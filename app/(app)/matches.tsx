@@ -2,15 +2,15 @@ import { FlatList, StyleSheet, RefreshControl, StatusBar, View } from 'react-nat
 import { useState, useEffect } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
-import MatchCard from '@/components/MatchCard';
-import MatchDetailsCard from '@/components/MatchDetailsCard';
+import MatchCard from '@/components/CustomCards/MatchCard';
+import MatchDetailsCard from '@/components/CustomCards/MatchDetailsCard';
 import { useAuth } from '@/hooks/useAuth';
 import useMatches from '@/hooks/useMatches';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 import GamesScroll from '@/components/GameScroll';
 import { Match } from '@/types/types';
-import CustomButtonGroup from '@/components/ui/CustomButtonGroup';
+import CustomButtonGroup from '@/components/ui/Buttons/CustomButtonGroup';
 
 export default function MatchesScreen() {
   const { user } = useAuth();
