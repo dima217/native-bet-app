@@ -7,7 +7,7 @@ import Burger from '../assets/images/burger1.svg';
 import User from '../assets/images/User.svg';
 import Swords from '../assets/images/Swords.svg';
 
-type Tab = 'matches' | 'bets' | 'profile' | 'menu';
+type Tab = 'matches' | 'bets' | 'profile' | 'leaders';
 
 export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }) {
   const theme = useColorScheme() || 'light';

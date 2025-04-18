@@ -1,7 +1,5 @@
-// types.ts
-export type RootStackParamList = {
-    settings: undefined;
-    editProfile: undefined;
-    linkAccounts: undefined;
-  };
-  
+export const Routes = {
+  Settings: '/(app)/(profile)/settings',
+  EditProfile: '/(app)/(profile)/editProfile',
+  LinkAccounts: '/(app)/(profile)/linkAccounts',
+};

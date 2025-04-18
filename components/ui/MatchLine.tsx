@@ -3,7 +3,7 @@ import { ThemedView } from "./ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet } from 'react-native';
 import { center } from "@shopify/react-native-skia";
-import { ThemedText } from '../../app-example/components/ThemedText';
+import { ThemedText } from '@/components/ui/ThemedText';
 import TeamCard from './TeamCard';
 
 type Props = {

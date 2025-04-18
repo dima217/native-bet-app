@@ -34,7 +34,7 @@ api.interceptors.response.use(
       const { logout } = require('../hooks/useAuth').useAuth();
 
       await logout();
-      router.replace('/(auth)/login');
+      router.replace('/(auth)/register');
     }
 
     return Promise.reject(error);

@@ -22,7 +22,7 @@ type FormData = {
 // RegisterScreen.tsx
 export default function RegisterScreen() {
   const router = useRouter();
-  const { register: signUp, isLoading } = useAuth();
+  const { isLoading, checkEmail } = useAuth();
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [error, setError] = useState('');
 
@@ -31,23 +31,16 @@ export default function RegisterScreen() {
   };
 
   const onSubmit = async (data: FormData) => {
+    setError('');
     try {
-      await signUp({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        balance: Number(data.balance)
-      });
-      await new Promise(resolve => setTimeout(resolve, 300));
-      router.replace('/(app)/matches');
-    } catch (err) {
-      let errorMessage = 'Registration failed';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      } else if (typeof err === 'string') {
-        errorMessage = err;
+      const exists = await checkEmail(data.email);
+      if (exists == 'login') {
+        router.push({ pathname: '/(auth)/password', params: { email: data.email } });
+      } else {
+        router.push({ pathname: '/(auth)/ver-code', params: { email: data.email } });
       }
-      setError(errorMessage);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
     }
   };
 
@@ -55,7 +48,7 @@ export default function RegisterScreen() {
     <ScreenWrapper>
     <ThemedView style={styles.innerContainer}>
     
-    <Logo width={223} height={96} style={styles.image}/>
+      <Logo width={223} height={96} style={styles.image}/>
 
       {error && <ThemedText style={styles.error}>{error}</ThemedText>}
 
@@ -75,26 +68,10 @@ export default function RegisterScreen() {
         error={getErrorMessage(errors.email)}
       />
 
-      <CustomInput
-        control={control}
-        name="password"
-        placeholder="••••••••"
-        secureTextEntry
-        rules={{
-          required: 'Password is required',
-          minLength: {
-            value: 6,
-            message: 'Minimum 6 characters'
-          }
-        }}
-        error={getErrorMessage(errors.password)}
-      />
-
       <CustomButton
         title="Enter"
         onPress={handleSubmit(onSubmit)}
         loading={isLoading}
-        style={styles.button}
       />
 
       <ThemedText style={styles.social}>
@@ -103,7 +80,8 @@ export default function RegisterScreen() {
 
     </ThemedView>
     <TouchableOpacity 
-        onPress={() => router.replace('/(auth)/login')}
+        //onPress={() => router.replace('/(auth)/login')}
+        onPress={() => console.log('test')}
         style={styles.linkContainer}
       >
         <ThemedText style={styles.linkText}>
@@ -121,6 +99,7 @@ const styles = {
     justifyContent: 'center',
     padding: 45,
     paddingTop: 0,
+    backgroundColor: 'transparent'
   },
 
   innerContainer: { 
@@ -147,9 +126,7 @@ const styles = {
     textAlign: 'center',
     fontSize: 14,
   },
-  button: {
-    marginTop: 25,
-  },
+
   linkContainer: {
     marginBottom: 50,
     alignItems: 'center',

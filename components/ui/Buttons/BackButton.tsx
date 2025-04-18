@@ -1,16 +1,14 @@
-// BackButton.tsx
 import React from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Arrow from '../../../assets/images/Arrow.svg'
+import { Pressable, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import Arrow from '../../../assets/images/Arrow.svg';
 
 export const BackButton = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   return (
-    <Pressable onPress={() => navigation.goBack()}>
-      <Arrow width={24} height={21}/>
+    <Pressable onPress={() => router.back()}>
+      <Arrow width={24} height={21} />
     </Pressable>
   );
 };
-

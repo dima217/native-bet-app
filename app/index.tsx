@@ -13,5 +13,5 @@ export default function Page() {
     );
   }
 
-  return user ? <Redirect href="/(app)/bets" /> : <Redirect href="/(auth)/login" />;
+  return user ? <Redirect href="/(app)/bets" /> : <Redirect href="/(auth)/register" />;
 }

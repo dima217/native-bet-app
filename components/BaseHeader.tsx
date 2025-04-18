@@ -1,4 +1,4 @@
-import { ThemedText } from "@/app-example/components/ThemedText";
+import { ThemedText } from "../components/ui/ThemedText";
 import MoneyBag from '../assets/images/Money bag.svg';
 import { ThemedView } from "./ui/ThemedView";
 import { StyleSheet } from "react-native";

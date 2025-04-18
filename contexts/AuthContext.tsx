@@ -11,12 +11,15 @@ type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  checkEmail: (email: string) => Promise<'login' | 'register'>;
+  verifyCode: (email: string, code: string) => Promise<void>;
   register: (data: {
     username: string;
     email: string;
     password: string;
     balance: number;
   }) => Promise<void>;
+  sendCode: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
@@ -44,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       async error => {
         if (error.response?.status === 401) {
           await logout();
-          router.replace('/(auth)/login');
+          router.replace('/(auth)/register');
         }
         return Promise.reject(error);
       }
@@ -80,6 +83,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, [pathname]);
 
+  const checkEmail = useCallback(async (email: string): Promise<'login' | 'register'> => {
+    setIsLoading(true);
+    resetError();
+    try {
+      const res = await axios.post('/auth/check-email', { email });
+      return res.data.exists ? 'login' : 'register';
+    } catch (err) {
+      let errorMessage = 'Email check failed';
+      if (axios.isAxiosError(err)) {
+        errorMessage = err.response?.data?.message || err.message;
+      }
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const verifyCode = useCallback(async (email: string, code: string) => {
+    setIsLoading(true);
+    resetError();
+    try {
+      const { data } = await axios.post('/auth/email/verify-code', { email, code });
+      if (data === true) {
+        router.replace('/(auth)/profile-reg');
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Code verification error';
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const sendCode = useCallback(async (email: string) => {
+    setIsLoading(true);
+    resetError();
+  
+    try {
+      await axios.post('/auth/email/send-code', { email });
+    } catch (error: any) {
+      const message = error?.response?.data?.message || "Failed to send code";
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+  
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
     resetError();
@@ -135,7 +186,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await removeToken();
       delete axios.defaults.headers.common['Authorization'];
       setUser(null);
-      router.replace('/(auth)/login');
+      router.replace('/(auth)/register');
     } catch (error) {
       setError('Logout failed. Please try again');
       throw error;
@@ -167,6 +218,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isLoading,
         login,
+        checkEmail,
+        sendCode,
+        verifyCode,
         register,
         logout,
         checkAuth,

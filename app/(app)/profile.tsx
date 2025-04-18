@@ -7,63 +7,53 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 import CustomAvatar from '@/components/ui/CustomAvatar';
-import { router, useNavigation } from 'expo-router';
-import { navigate } from 'expo-router/build/global-state/routing';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@/types/navigationTypes';
-
-type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+import { useRouter } from 'expo-router';
+import { Routes } from '@/types/navigationTypes';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
   const buttonColor = useThemeColor({}, 'error');
-  const navigation = useNavigation<NavigationProps>();
+  const router = useRouter();
 
   return (
-  <>
-    <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
+    <>
+      <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
 
-    <BaseHeader
-        label='My account' 
-     />
+      <BaseHeader label="My account" />
 
-     <View style={styles.avatar}>
-      <CustomAvatar
-        size={64}
-      />
-    </View>
-    <ThemedView style={[styles.container, { backgroundColor }]}>
+      <View style={styles.avatar}>
+        <CustomAvatar size={64} />
+      </View>
+
+      <ThemedView style={[styles.container, { backgroundColor }]}>
         <View style={styles.infoContainer}>
           <ThemedText style={styles.info}>{user?.username}</ThemedText>
-
           <ThemedText style={styles.info}>{user?.email}</ThemedText>
         </View>
 
         <CustomButton
-          title="Setting"
-          onPress={() => navigation.navigate("settings")}
+          title="Settings"
+          onPress={() => router.push('/(app)/(profile)/settings')}
         />
         <CustomButton
           title="Edit Profile"
-          onPress={() => navigation.navigate("editProfile")}
+          onPress={() => router.push('/(app)/(profile)/editProfile')}
         />
-
         <CustomButton
           title="Link other accounts"
-          onPress={() => navigation.navigate("linkAccounts")}
+          onPress={() => router.push('/(app)/(profile)/linkAccounts')}
         />
-    </ThemedView>
+      </ThemedView>
 
-    <CustomButton
-          title="Logout"
-          onPress={logout}
-          style={styles.button}
+      <CustomButton
+        title="Logout"
+        onPress={logout}
+        style={styles.button}
       />
 
-    <NavigationTabs currentScreen="profile" />
-  </>
+      <NavigationTabs currentScreen="profile" />
+    </>
   );
 }
 
@@ -75,52 +65,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0166FE'
   },
-
   container: {
     paddingHorizontal: 45,
     marginTop: 8,
     flex: 1,
     marginBottom: 15, 
   },
-
   avatar: {
     marginTop: 25,
   },
-
-  title: {
-    marginBottom: 30,
-    textAlign: 'center',
-  },
   infoContainer: {
-    margin: 0,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
     marginBottom: 30,
   },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
   info: {
     fontSize: 18,
     marginBottom: 15,
     color: '#666',
-  },
-  balance: {
-    fontSize: 24,
-    color: '#4CAF50',
-    marginVertical: 10,
-  },
-  logoutButton: {
-    borderRadius: 8,
-    paddingVertical: 14,
-    marginTop: 20,
-  },
-  logoutText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-  },
+  }
 });

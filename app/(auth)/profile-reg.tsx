@@ -1,88 +1,115 @@
-import ScreenWrapper from "@/components/BaseWrappers/ScreenWrapper";
-import { ThemedText } from "@/components/ui/ThemedText";
-import { ThemedView } from "@/components/ui/ThemedView";
+// ProfileRegScreen.tsx
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useForm, FieldError } from 'react-hook-form';
+import { useState } from 'react';
+import { useImagePicker } from '@/hooks/useImagePicker';
+import { useAuth } from '@/hooks/useAuth';
+import ScreenWrapper from '@/components/BaseWrappers/ScreenWrapper';
+import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from '@/components/ui/ThemedView';
 import CustomInput from '@/components/ui/Inputs/CustomInput';
-import { useRouter } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
-import { FieldError, useForm } from "react-hook-form";
-import { useState } from "react";
-import CustomButton from '../../components/ui/Buttons/CustomButton';
-import { ImagePickerButton } from "@/components/ImagePickerButton";
-import { useImagePicker } from '../../hooks/useImagePicker';
+import CustomButton from '@/components/ui/Buttons/CustomButton';
+import { ImagePickerButton } from '@/components/ImagePickerButton';
 import { StyleSheet } from 'react-native';
 
 type FormData = {
-    username: string;
-}
-
-const onSubmit = async (data: FormData) => {};
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function ProfileRegScreen() {
-    const router = useRouter();
-    const { register: signUp, isLoading } = useAuth();
-    const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const [error, setError] = useState('');
-    const { image, pickImage } = useImagePicker();
+  const { email } = useLocalSearchParams<{ email: string }>();
+  const { control, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
+  const { register, isLoading } = useAuth();
+  const [error, setError] = useState('');
+  const { image, pickImage } = useImagePicker();
+  const router = useRouter();
+  const initialBalance = 100;
 
-    const getErrorMessage = (error: FieldError | undefined): string | undefined => {
-        return error?.message;
-    };
-    
-    return (
+  const getErrorMessage = (error: FieldError | undefined) => error?.message;
+
+  const onSubmit = async (data: FormData) => {
+    if (data.password !== data.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      await register({
+        email,
+        username: data.username,
+        password: data.password,
+        balance: initialBalance,
+      });
+      router.replace('/(app)/matches');
+    } catch (err: any) {
+      setError(err.message || 'Registration failed');
+    }
+  };
+
+  return (
     <ScreenWrapper>
-    <ThemedView style={styles.innerContainer}>
-     <ThemedText type="title" style={styles.text} >
-         Let's get started 
-     </ThemedText>
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.title}>Create Your Profile</ThemedText>
 
-     <ImagePickerButton
-        onPress={pickImage}
-        image={image}
-     />
+        <ImagePickerButton onPress={pickImage} image={image} />
+
+        {error && <ThemedText style={styles.error}>{error}</ThemedText>}
+
         <CustomInput
-        control={control}
-        label="Name"
-        baseLabel="Your name"
-        name="name"
-        rules={{
-        required: 'Name is required',
-        minLength: {
-            value: 2,
-            message: 'Name must be at least 2 characters'
-        },
-         maxLength: {
-            value: 50,
-            message: 'Name cannot exceed 50 characters'
-        },
-        pattern: {
-            value: /^[\p{L}\s'-.]{2,50}$/u,
-            message: 'Invalid name format'
-        }
-        }}
-        error={getErrorMessage(errors.username)}
-         />
-
-        <CustomButton
-        title="Enter"
-        onPress={handleSubmit(onSubmit)}
-        loading={isLoading}
+          control={control}
+          label="Name"
+          name="username"
+          rules={{ required: 'Name is required' }}
+          error={getErrorMessage(errors.username)}
         />
 
-    </ThemedView>
+        <CustomInput
+          control={control}
+          name="password"
+          label="Password"
+          secureTextEntry
+          rules={{
+            required: 'Password is required',
+            minLength: { value: 6, message: 'At least 6 characters' },
+          }}
+          error={getErrorMessage(errors.password)}
+        />
+
+        <CustomInput
+          control={control}
+          name="confirmPassword"
+          label="Confirm Password"
+          secureTextEntry
+          rules={{
+            required: 'Please confirm password',
+            validate: (value: string) =>
+              value === watch('password') || 'Passwords do not match',
+          }}
+          error={getErrorMessage(errors.confirmPassword)}
+        />
+
+        <CustomButton title="Register" onPress={handleSubmit(onSubmit)} loading={isLoading} />
+      </ThemedView>
     </ScreenWrapper>
-    )
+  );
 }
 
 const styles = StyleSheet.create({
-    innerContainer: { 
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'transparent', 
-        padding: 45,
-    },
-
-    text: {
-        alignSelf: 'center',
-        marginBottom: 25,
-    }
+  container: {
+    padding: 25,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 26,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  error: {
+    color: '#FF3B30',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
 });
