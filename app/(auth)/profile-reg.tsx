@@ -59,7 +59,7 @@ export default function ProfileRegScreen() {
 
         <CustomInput
           control={control}
-          label="Name"
+          placeholder="Username"
           name="username"
           rules={{ required: 'Name is required' }}
           error={getErrorMessage(errors.username)}
@@ -67,8 +67,8 @@ export default function ProfileRegScreen() {
 
         <CustomInput
           control={control}
+          placeholder="Password"
           name="password"
-          label="Password"
           secureTextEntry
           rules={{
             required: 'Password is required',
@@ -80,7 +80,7 @@ export default function ProfileRegScreen() {
         <CustomInput
           control={control}
           name="confirmPassword"
-          label="Confirm Password"
+          placeholder="Confirm Password"
           secureTextEntry
           rules={{
             required: 'Please confirm password',
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     padding: 25,
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: 'transparent'
   },
   title: {
     fontSize: 26,

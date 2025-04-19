@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
 
-  // Статусный бейдж
   statusBadge: {
     position: 'absolute',
     top: 8,

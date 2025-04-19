@@ -11,6 +11,7 @@ import BaseHeader from '@/components/BaseHeader';
 import GamesScroll from '@/components/GameScroll';
 import { Match } from '@/types/types';
 import CustomButtonGroup from '@/components/ui/Buttons/CustomButtonGroup';
+import { UserBetsProvider } from '@/contexts/UserBetsContext';
 
 export default function MatchesScreen() {
   const { user } = useAuth();
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
+    padding: 5,
     paddingTop: 5,
     paddingBottom: 83,
   },

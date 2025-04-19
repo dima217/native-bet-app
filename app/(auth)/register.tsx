@@ -55,8 +55,7 @@ export default function RegisterScreen() {
 
       <CustomInput
         control={control}
-        label="Email"
-        baseLabel="Your email"
+        placeholder="Your email"
         name="email"
         rules={{
           required: 'Email is required',

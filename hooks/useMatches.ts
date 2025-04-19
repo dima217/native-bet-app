@@ -12,7 +12,7 @@ export default function useMatches() {
     try {
       const response = await api.get('/matches');
       const pendingMatches = response.data.filter(
-        (match: Match) => match.status === MatchStatus.SCHEDULED
+        (match: Match) => match.status === MatchStatus.NOT_STARTED
       );
       setMatches(pendingMatches);
     } catch (err) {

@@ -13,10 +13,10 @@ export enum UserRole {
 }
 
 export enum MatchStatus {
-  SCHEDULED = 'pending',
-  LIVE = 'in progress',
+  NOT_STARTED = 'not_started',
+  RUNNING = 'running',
   FINISHED = 'finished',
-  CANCELED = 'cancelled',
+  CANCELED = 'canceled',
 }
 
 export enum BetStatus {

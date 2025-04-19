@@ -2,61 +2,59 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../ui/ThemedText';
 import { ThemedView } from '../ui/ThemedView';
 import { Match } from '../../types/types';
-import { BetModal } from '../../components/BetModal';
 import { useState } from 'react';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from '../ui/MatchLine';
 import Clock from '../../assets/images/clock 1.svg'
+import { useUserBetsContext } from '@/contexts/UserBetsContext';
 
 export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
+  const { bets } = useUserBetsContext();
   const [modalVisible, setModalVisible] = useState(false);
   const iconColor = useThemeColor({}, 'tint');
   const cardColor = useThemeColor({}, 'cardBackground');
   const borderColor = useThemeColor({}, 'border');
+  const tintColor = useThemeColor({}, 'tint');
+
+  const userBet = bets.find((bet) => bet.match.id === match.id);
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <ThemedView 
-        style={[
-          styles.card,
-          { backgroundColor: cardColor }
-        ]}
-      >
-        <View style={styles.header}>
-          <ThemedText type="subtitle" style={styles.sportTitle}>
-            {match.sportType.toUpperCase()}
-          </ThemedText>
-        </View>
-
-        <MatchLine 
-        teamA={match.teamA}
-        teamB={match.teamB}
-        />
-
-      <View
-      style={
-        styles.footer
-      }
-      >
-        <View
-        style={
-          styles.time
-        }
-        >
-          <Clock width={12} height={12}/>
-          <ThemedText>
-            30sec
-          </ThemedText>
-        </View>
+    <TouchableOpacity
+     onPress={onPress}
+     disabled={!!userBet} 
+    >
+  <ThemedView 
+    style={[
+      styles.card,
+      { backgroundColor: cardColor }
+    ]}
+  >
+    {userBet && (
+      <View style={[styles.votedBadge, { borderColor: tintColor }]}>
+        <ThemedText style={{ color: tintColor, fontSize: 12 }}>Voted</ThemedText>
       </View>
-      </ThemedView>
+    )}
 
-      <BetModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        match={match}
-      />
-    </TouchableOpacity>
+    <View style={styles.header}>
+      <ThemedText type="subtitle" style={styles.sportTitle}>
+        {match.sportType.toUpperCase()}
+      </ThemedText>
+    </View>
+
+    <MatchLine 
+      teamA={match.teamA}
+      teamB={match.teamB}
+      votedTeam={userBet?.team}
+    />
+
+    <View style={styles.footer}>
+      <View style={styles.time}>
+        <Clock width={12} height={12}/>
+        <ThemedText>30sec</ThemedText>
+      </View>
+    </View>
+  </ThemedView>
+</TouchableOpacity>
   );
 }
 
@@ -87,6 +85,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
+  },
+  votedBadge: {
+    position: 'absolute',
+    top: 5,
+    left: 10,
+    zIndex: 2,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
   },
   header: {
     flexDirection: 'row',

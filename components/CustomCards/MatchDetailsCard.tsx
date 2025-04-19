@@ -7,7 +7,8 @@ import MatchLine from '../ui/MatchLine';
 import CustomButton from '../ui/Buttons/CustomButton';
 import Clock from '../../assets/images/clock 1.svg';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import BetKeyboard from '../../components/BetKeyBoard'; 
+import BetKeyboard from '../../components/BetKeyBoard';
+import { useUserBets } from '@/hooks/useUserBets';
 
 export default function MatchDetailsCard({
   match,
@@ -17,7 +18,38 @@ export default function MatchDetailsCard({
   onBack: () => void;
 }) {
   const cardColor = useThemeColor({}, 'cardBackground');
+  const { placeBet } = useUserBets();
+
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const [selectedOutcome, setSelectedOutcome] = useState<string | undefined>();
+  const [selectionError, setSelectionError] = useState<string | undefined>();
+
+  const handleTeamSelect = (team: string) => {
+    setSelectedOutcome(team);
+    setSelectionError(undefined);
+    setShowKeyboard(true);
+  };
+
+  const handleDrawPress = () => {
+    setSelectedOutcome('Draw');
+    setSelectionError(undefined);
+    setShowKeyboard(true);
+  };
+
+  const handleConfirmBet = async (amount: number) => {
+    if (!selectedOutcome) {
+      setSelectionError('Please select a team');
+      return;
+    }
+
+    try {
+      await placeBet(match.id, amount, selectedOutcome);
+      setShowKeyboard(false);
+      setSelectedOutcome(undefined);
+    } catch (error) {
+      console.error('Failed to place bet:', error);
+    } 
+  };
 
   return (
     <>
@@ -26,25 +58,30 @@ export default function MatchDetailsCard({
           <ThemedText type="subtitle">{match.sportType.toUpperCase()}</ThemedText>
         </View>
 
-        <MatchLine teamA={match.teamA} teamB={match.teamB} />
+        <MatchLine
+          teamA={match.teamA}
+          teamB={match.teamB}
+          votedTeam={selectedOutcome}
+          selectable
+          onSelectTeam={handleTeamSelect}
+        />
 
-      {showKeyboard ? (
-        <BetKeyboard 
-          style={styles.keyBoard}
-          onCancel={() => setShowKeyboard(false)} 
-          onConfirm={(amount) => {
-            // place bet logic here
-            console.log('Voted with', amount);
-            setShowKeyboard(false);
-          }} 
-        />
-      ) : 
-      <CustomButton 
-          title="Draw" 
-          onPress={() => setShowKeyboard(true)} 
-          style={styles.drawButton} 
-        />
-      }
+        {showKeyboard ? (
+          <BetKeyboard
+            style={styles.keyBoard}
+            onCancel={() => {
+              setShowKeyboard(false);
+              setSelectedOutcome(undefined);
+            }}
+            onConfirm={handleConfirmBet}
+          />
+        ) : (
+          <CustomButton
+            title="Draw"
+            onPress={handleDrawPress}
+            style={styles.drawButton}
+          />
+        )}
 
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <ThemedText>← Back</ThemedText>
@@ -80,7 +117,8 @@ const styles = StyleSheet.create({
     borderColor: '#666C7C',
     backgroundColor: 'transparent',
     borderRadius: 8,
-    marginVertical: 12,
+    marginHorizontal: 5,
+    marginVertical: 25,
   },
   time: {
     flexDirection: 'row',

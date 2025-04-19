@@ -22,7 +22,7 @@ export const Colors = {
     text: '#ffffff',
     primary: '#8b9dc3',
     error: '#c0392b',
-    tint: '#6200ee',
+    tint: '#4A90E2',
     cardBackground: '#191B28'
   },
 };

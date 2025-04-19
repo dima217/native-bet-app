@@ -39,7 +39,6 @@ export default function PasswordScreen() {
         <CustomInput
           control={control}
           name="password"
-          label="Password"
           secureTextEntry
           placeholder="••••••••"
           rules={{

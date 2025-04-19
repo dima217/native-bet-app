@@ -1,15 +1,21 @@
-import { FlatList, StyleSheet, RefreshControl, ActivityIndicator, StatusBar } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
 import BetCard from '@/components/CustomCards/BetCard';
-import { useUserBets } from '@/hooks/useUserBets';
+import { useUserBetsContext } from '@/contexts/UserBetsContext';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 
 export default function MyBetsScreen() {
   const { user } = useAuth();
-  const { bets, loading, error, refreshBets } = useUserBets();
+  const { bets, loading, error, refreshBets } = useUserBetsContext();
 
   if (!user) {
     return (
@@ -22,12 +28,8 @@ export default function MyBetsScreen() {
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-
-      <BaseHeader
-      label='My votes'
-      />
+      <BaseHeader label="My votes" />
       <ThemedView style={styles.container}>
-
         {loading ? (
           <ActivityIndicator size="large" style={styles.loader} />
         ) : (
@@ -37,10 +39,7 @@ export default function MyBetsScreen() {
             renderItem={({ item }) => <BetCard bet={item} />}
             contentContainerStyle={styles.list}
             refreshControl={
-              <RefreshControl
-                refreshing={loading}
-                onRefresh={refreshBets}
-              />
+              <RefreshControl refreshing={loading} onRefresh={refreshBets} />
             }
             ListEmptyComponent={
               <ThemedText style={styles.empty}>
@@ -49,7 +48,6 @@ export default function MyBetsScreen() {
             }
           />
         )}
-
         <NavigationTabs currentScreen="bets" />
       </ThemedView>
     </>
@@ -61,10 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingBottom: 80,
-  },
-  title: {
-    marginBottom: 20,
-    fontSize: 24,
   },
   list: {
     paddingBottom: 24,
