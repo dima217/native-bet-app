@@ -25,7 +25,7 @@ export default function ProfileRegScreen() {
   const [error, setError] = useState('');
   const { image, pickImage } = useImagePicker();
   const router = useRouter();
-  const initialBalance = 100;
+  const initialBalance = 1000;
 
   const getErrorMessage = (error: FieldError | undefined) => error?.message;
 
@@ -34,20 +34,43 @@ export default function ProfileRegScreen() {
       setError('Passwords do not match');
       return;
     }
-
+  
     try {
+      let avatarUrl = null;
+  
+      if (image) {
+        const formData = new FormData();
+        formData.append('file', {
+          uri: image,
+          name: 'avatar.jpg',
+          type: 'image/jpeg',
+        } as any);
+  
+        const response = await fetch('http://<YOUR_BACKEND_URL>/image/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        const result = await response.json();
+        avatarUrl = result.avatarUrl;
+      }
+  
       await register({
         email,
         username: data.username,
         password: data.password,
         balance: initialBalance,
+        image: avatarUrl, 
       });
+  
       router.replace('/(app)/matches');
     } catch (err: any) {
       setError(err.message || 'Registration failed');
     }
   };
-
   return (
     <ScreenWrapper>
       <ThemedView style={styles.container}>

@@ -18,7 +18,9 @@ type AuthContextType = {
     email: string;
     password: string;
     balance: number;
+    image?: string;
   }) => Promise<void>;
+  uploadImage: (image: string) => Promise<string>;
   sendCode: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
@@ -154,16 +156,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const uploadImage = async (imageUri: string): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', {
+      uri: imageUri,
+      name: 'avatar.jpg',
+      type: 'image/jpeg',
+    } as any);
+  
+    const response = await axios.post('/image/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.avatarUrl;
+  };
+
   const register = useCallback(async (data: {
     username: string;
     email: string;
     password: string;
     balance: number;
+    image?: string; 
   }) => {
     setIsLoading(true);
     resetError();
+  
     try {
-      const response = await axios.post('/users', data);
+      let avatarUrl: string | undefined;
+  
+      if (data.image) {
+        avatarUrl = await uploadImage(data.image);
+      }
+
+      const response = await axios.post('/users', {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        balance: data.balance,
+        avatar: avatarUrl,
+      });
+  
       await storeToken(response.data.token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       setUser(response.data.user);
@@ -222,6 +255,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         sendCode,
         verifyCode,
         register,
+        uploadImage,
         logout,
         checkAuth,
         forgotPassword,
