@@ -31,6 +31,7 @@ export type User = {
     email: string;
     username: string,
     balance: number,
+    avatarUrl?: string | null,
     role: UserRole;
   };
 
@@ -43,17 +44,22 @@ export type User = {
       id: number;
       teamA: string;
       teamB: string;
-      date: string;
+      beginAt: string;
+      league: string;
+      sportType: SportType;
     };
   };
 
   export type Match = {
     id: number;
-    date: string;
+    beginAt: Date;
     time: string;
     sportType: SportType;
     status: MatchStatus;
     teamA: string;
     teamB: string;
+    league: string;
+    teamAImage?: string; 
+    teamBImage?: string; 
     winner: string;
   }

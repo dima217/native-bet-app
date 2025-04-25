@@ -11,6 +11,7 @@ import CustomInput from '@/components/ui/Inputs/CustomInput';
 import CustomButton from '@/components/ui/Buttons/CustomButton';
 import { ImagePickerButton } from '@/components/ImagePickerButton';
 import { StyleSheet } from 'react-native';
+import axios from 'axios';
 
 type FormData = {
   username: string;
@@ -46,16 +47,14 @@ export default function ProfileRegScreen() {
           type: 'image/jpeg',
         } as any);
   
-        const response = await fetch('http://<YOUR_BACKEND_URL>/image/upload', {
-          method: 'POST',
-          body: formData,
+        const response = await axios.post('/image/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        });
+        });        
   
-        const result = await response.json();
-        avatarUrl = result.avatarUrl;
+        const result = response.data.avatarUrl;
+        avatarUrl = result;
       }
   
       await register({

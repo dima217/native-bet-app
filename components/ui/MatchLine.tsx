@@ -1,14 +1,14 @@
-import { SportType } from "@/types/types";
-import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet } from 'react-native';
-import { center } from "@shopify/react-native-skia";
-import { ThemedText } from '@/components/ui/ThemedText';
+import { ThemedView } from './ThemedView';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { ThemedText } from './ThemedText';
 import TeamCard from './TeamCard';
 
 type Props = {
   teamA: string;
   teamB: string;
+  teamAImage?: string;
+  teamBImage?: string;
   votedTeam?: string;
   selectable?: boolean;
   onSelectTeam?: (team: string) => void;
@@ -17,11 +17,13 @@ type Props = {
 export default function MatchLine({
   teamA,
   teamB,
+  teamAImage,
+  teamBImage,
   votedTeam,
   selectable = false,
   onSelectTeam,
 }: Props) {
-  const cardColor = useThemeColor({}, "cardBackground");
+  const cardColor = useThemeColor({}, 'cardBackground');
 
   const handleSelect = (team: string) => {
     if (selectable && onSelectTeam) {
@@ -30,17 +32,21 @@ export default function MatchLine({
   };
 
   return (
-    <ThemedView style={[styles.lineStile, { backgroundColor: cardColor }]}>
+    <ThemedView style={[styles.lineStyle, { backgroundColor: cardColor }]}>
       <TeamCard
         team={teamA}
+        image={teamAImage}
         index={1}
         selected={votedTeam === teamA}
         onPress={() => handleSelect(teamA)}
         selectable={selectable}
       />
-      <ThemedText type="subtitle" style={styles.label}>VS</ThemedText>
+      <ThemedText type="subtitle" style={styles.label}>
+        VS
+      </ThemedText>
       <TeamCard
         team={teamB}
+        image={teamBImage}
         index={2}
         selected={votedTeam === teamB}
         onPress={() => handleSelect(teamB)}
@@ -51,14 +57,12 @@ export default function MatchLine({
 }
 
 const styles = StyleSheet.create({
-  lineStile: {
+  lineStyle: {
     paddingHorizontal: 5,
     height: 58,
-    backgroundColor: "transparent",
-    display: "flex",
-    flexDirection: "row",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-    alignItems: "center",
   },
   label: {
     paddingHorizontal: 10,

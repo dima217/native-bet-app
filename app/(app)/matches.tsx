@@ -12,6 +12,7 @@ import GamesScroll from '@/components/GameScroll';
 import { Match } from '@/types/types';
 import CustomButtonGroup from '@/components/ui/Buttons/CustomButtonGroup';
 import { UserBetsProvider } from '@/contexts/UserBetsContext';
+import { isToday, isTomorrow, isThisWeek, parseISO } from 'date-fns';
 
 export default function MatchesScreen() {
   const { user } = useAuth();
@@ -22,6 +23,21 @@ export default function MatchesScreen() {
   useEffect(() => {
     if (user) refreshMatches();
   }, [user]);
+
+  const filteredMatches = matches.filter((match) => {
+    const matchDate = new Date(match.beginAt);
+
+    switch (selectedFilter) {
+      case 'Today':
+        return isToday(matchDate);
+      case 'Tomorrow':
+        return isTomorrow(matchDate);
+      case 'This week':
+        return isThisWeek(matchDate, { weekStartsOn: 1 });
+      default:
+        return true;
+    }
+  });
 
   return (
     <>
@@ -48,7 +64,7 @@ export default function MatchesScreen() {
           </View>
           ) : (
           <FlatList
-            data={matches}
+            data={filteredMatches}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
             <MatchCard match={item} onPress={() => setSelectedMatch(item)} />

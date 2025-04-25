@@ -23,7 +23,7 @@ export default function ProfileScreen() {
       <BaseHeader label="My account" />
 
       <View style={styles.avatar}>
-        <CustomAvatar size={64} />
+        <CustomAvatar size={64} image={user?.avatarUrl} />
       </View>
 
       <ThemedView style={[styles.container, { backgroundColor }]}>

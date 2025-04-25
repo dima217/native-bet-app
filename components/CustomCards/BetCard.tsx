@@ -32,7 +32,7 @@ export default function BetCard({ bet }: { bet: Bet }) {
 
       <View style={styles.headerRow}>
         <ThemedText style={styles.tournament}>
-          {bet.match.date} 
+          {bet.match.league} {" - "} {bet.match.sportType}
         </ThemedText>
       </View>
 
@@ -42,7 +42,7 @@ export default function BetCard({ bet }: { bet: Bet }) {
       />
 
       <View style={styles.footer}>
-        <ThemedText style={styles.dateText}>{bet.match.date}</ThemedText>
+        <ThemedText style={styles.dateText}>{bet.match.beginAt}</ThemedText>
         <View style={[styles.amountBubble]}>
           <ThemedText style={[styles.amountText, getAmountColor()]}>
             {bet.status === 'win' && `+ ${bet.amount} gg`}

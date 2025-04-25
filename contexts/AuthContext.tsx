@@ -156,22 +156,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const uploadImage = async (imageUri: string): Promise<string> => {
-    const formData = new FormData();
-    formData.append('file', {
-      uri: imageUri,
-      name: 'avatar.jpg',
-      type: 'image/jpeg',
-    } as any);
-  
-    const response = await axios.post('/image/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data.avatarUrl;
-  };
-
   const register = useCallback(async (data: {
     username: string;
     email: string;
@@ -212,6 +196,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }, []);
+  
+
+  const uploadImage = async (imageUri: string): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', {
+      uri: imageUri,
+      name: 'avatar.jpg',
+      type: 'image/jpeg',
+    } as any);
+  
+    const response = await axios.post('/image/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.avatarUrl;
+  };
 
   const logout = useCallback(async () => {
     setIsLoading(true);
