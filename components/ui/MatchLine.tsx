@@ -58,7 +58,6 @@ export default function MatchLine({
 
 const styles = StyleSheet.create({
   lineStyle: {
-    paddingHorizontal: 5,
     height: 58,
     flexDirection: 'row',
     alignItems: 'center',

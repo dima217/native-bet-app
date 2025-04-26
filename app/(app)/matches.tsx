@@ -9,7 +9,7 @@ import useMatches from '@/hooks/useMatches';
 import NavigationTabs from '@/components/NavigationTabs';
 import BaseHeader from '@/components/BaseHeader';
 import GamesScroll from '@/components/GameScroll';
-import { Match } from '@/types/types';
+import { Match, SportType } from '@/types/types';
 import CustomButtonGroup from '@/components/ui/Buttons/CustomButtonGroup';
 import { UserBetsProvider } from '@/contexts/UserBetsContext';
 import { isToday, isTomorrow, isThisWeek, parseISO } from 'date-fns';
@@ -18,6 +18,7 @@ export default function MatchesScreen() {
   const { user } = useAuth();
   const { matches, loading, error, refreshMatches } = useMatches();
   const [selectedFilter, setSelectedFilter] = useState('Today');
+  const [selectedGameId, setSelectedGameId] = useState<SportType>(SportType.LOL);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
   useEffect(() => {
@@ -27,16 +28,22 @@ export default function MatchesScreen() {
   const filteredMatches = matches.filter((match) => {
     const matchDate = new Date(match.beginAt);
 
-    switch (selectedFilter) {
-      case 'Today':
-        return isToday(matchDate);
-      case 'Tomorrow':
-        return isTomorrow(matchDate);
-      case 'This week':
-        return isThisWeek(matchDate, { weekStartsOn: 1 });
-      default:
-        return true;
-    }
+    const isDateMatch = (() => {
+      switch (selectedFilter) {
+        case 'Today':
+          return isToday(matchDate);
+        case 'Tomorrow':
+          return isTomorrow(matchDate);
+        case 'This week':
+          return isThisWeek(matchDate, { weekStartsOn: 1 });
+        default:
+          return true;
+      }
+    })();
+
+    const isGameMatch = match.sportType === selectedGameId;
+
+    return isDateMatch && isGameMatch;
   });
 
   return (
@@ -45,7 +52,7 @@ export default function MatchesScreen() {
       <BaseHeader label="Play" />
 
       <ThemedView style={styles.container}>
-        <GamesScroll />
+      <GamesScroll selectedGame={selectedGameId} onSelect={setSelectedGameId} />
 
       {!selectedMatch && (
 

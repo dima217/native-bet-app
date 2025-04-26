@@ -6,11 +6,14 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from '../ui/MatchLine';
 import Clock from '../../assets/images/clock 1.svg';
 import { useUserBetsContext } from '@/contexts/UserBetsContext';
+import { timeUntil } from '@/custom/dateUtils';
+import { useState } from 'react';
 
 export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
   const { bets } = useUserBetsContext();
   const cardColor = useThemeColor({}, 'cardBackground');
   const tintColor = useThemeColor({}, 'tint');
+  const [selectedGameId, setSelectedGameId] = useState<string>('1');
 
   const userBet = bets.find((bet) => bet.match.id === match.id);
 
@@ -40,7 +43,7 @@ export default function MatchCard({ match, onPress }: { match: Match, onPress: (
         <View style={styles.footer}>
           <View style={styles.time}>
             <Clock width={12} height={12} />
-            <ThemedText>30sec</ThemedText>
+            <ThemedText>{timeUntil(new Date(match.beginAt))}</ThemedText>
           </View>
         </View>
       </ThemedView>

@@ -6,10 +6,11 @@ import { ThemedView } from "@/components/ui/ThemedView";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { FieldError, useForm } from "react-hook-form";
 import { Alert, StatusBar, StyleSheet, Text } from 'react-native';
-import axios from "axios";
+import axios from 'axios';
 import { useAuth } from '../../../hooks/useAuth';
 import { useState } from "react";
 import { Image as RNImage } from "react-native";
+import { API_URL } from "@/config";
 
 type FormData = {
   username: string;
@@ -23,7 +24,7 @@ export default function EditProfileScreen() {
   ).uri;
 
   const { image, pickImage } = useImagePicker();
-  const displayedImage = image || user?.avatarUrl || defaultUri;
+  const displayedImage = image || `${API_URL}${user?.avatarUrl}`|| defaultUri;
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [error, setError] = useState('');

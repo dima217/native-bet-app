@@ -9,13 +9,16 @@ import BaseHeader from '@/components/BaseHeader';
 import CustomAvatar from '@/components/ui/CustomAvatar';
 import { useRouter } from 'expo-router';
 import { Routes } from '@/types/navigationTypes';
+import { API_URL } from '@/config';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const backgroundColor = useThemeColor({}, 'background');
   const buttonColor = useThemeColor({}, 'error');
   const router = useRouter();
-
+  const avatarUri = user?.avatarUrl ? `${API_URL}${user.avatarUrl}` : null;
+  console.log('Avatar full URL:', avatarUri);
+  
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
@@ -23,7 +26,7 @@ export default function ProfileScreen() {
       <BaseHeader label="My account" />
 
       <View style={styles.avatar}>
-        <CustomAvatar size={64} image={user?.avatarUrl} />
+        <CustomAvatar size={64} image={`${API_URL}${user?.avatarUrl}`} />
       </View>
 
       <ThemedView style={[styles.container, { backgroundColor }]}>

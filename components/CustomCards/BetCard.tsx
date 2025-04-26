@@ -4,6 +4,7 @@ import { Bet } from '../../types/types';
 import { ThemedView } from '../ui/ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from '../ui/MatchLine';
+import { formatDate } from '@/custom/dateUtils';
 
 export default function BetCard({ bet }: { bet: Bet }) {
   const cardBackground = useThemeColor({}, 'cardBackground');
@@ -22,6 +23,7 @@ export default function BetCard({ bet }: { bet: Bet }) {
 
   return (
     <ThemedView style={[styles.card, { backgroundColor: cardBackground }]}>
+      <ThemedView style={styles.row}>
       <View style={[styles.statusBadge, getStatusStyle()]}>
         <ThemedText style={styles.statusText}>
           {bet.status === 'win' && 'Win'}
@@ -35,14 +37,18 @@ export default function BetCard({ bet }: { bet: Bet }) {
           {bet.match.league} {" - "} {bet.match.sportType}
         </ThemedText>
       </View>
+      </ThemedView>
 
       <MatchLine
         teamA={bet.match.teamA}
         teamB={bet.match.teamB}
+        teamAImage={bet.match.teamAImage}
+        teamBImage={bet.match.teamBImage}
+        votedTeam={bet.team}
       />
 
       <View style={styles.footer}>
-        <ThemedText style={styles.dateText}>{bet.match.beginAt}</ThemedText>
+        <ThemedText style={styles.dateText}>{formatDate(bet.match.beginAt)}</ThemedText>
         <View style={[styles.amountBubble]}>
           <ThemedText style={[styles.amountText, getAmountColor()]}>
             {bet.status === 'win' && `+ ${bet.amount} gg`}
@@ -68,14 +74,18 @@ const styles = StyleSheet.create({
     elevation: 5,
     position: 'relative',
   },
-
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 2,   
+    backgroundColor: 'transparent',
+  },
   statusBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
+    alignContent: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 10,
+    paddingVertical: 2,
+    borderRadius: 15,
     zIndex: 10,
   },
   statusText: {
@@ -94,8 +104,8 @@ const styles = StyleSheet.create({
     borderColor: '#388E3C',
   },
 
-  // Турнир и матч
   headerRow: {
+    paddingRight: 8,
     alignItems: 'flex-end',
     marginTop: 8,
     marginBottom: 8,

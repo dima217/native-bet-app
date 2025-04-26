@@ -1,7 +1,7 @@
 export enum SportType {
   DOTA2 = 'dota2',
-  COUNTER_STRIKE = 'counter-strike',
-  LOL = 'league-of-legends',
+  CSGO = 'csgo',
+  LOL = 'lol',
   VALORANT = 'valorant',
   OVERWATCH = 'overwatch',
 }
@@ -47,6 +47,8 @@ export type User = {
       beginAt: string;
       league: string;
       sportType: SportType;
+      teamAImage?: string; 
+      teamBImage?: string; 
     };
   };
 

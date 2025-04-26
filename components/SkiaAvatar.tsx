@@ -1,6 +1,6 @@
-// components/SkiaAvatar.tsx
 import React from 'react';
 import { Canvas, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
+import { Image as RNImage } from 'react-native';
 
 type SkiaAvatarProps = {
   uri: string;
@@ -9,12 +9,26 @@ type SkiaAvatarProps = {
 
 export const SkiaAvatar = ({ uri, size }: SkiaAvatarProps) => {
   const image = useImage(uri);
-  if (!image) return null;
+
+  const defaultPlaceholder = require('../assets/images/Def-Ava.png');
+
+  if (!image) {
+    return (
+      <RNImage
+        source={defaultPlaceholder}
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+        }}
+        resizeMode="cover"
+      />
+    );
+  }
 
   const srcWidth = image.width();
   const srcHeight = image.height();
 
-  const radius = size / 2;
   const scale = Math.min(size / srcWidth, size / srcHeight);
   const xOffset = (size - srcWidth * scale) / 2;
   const yOffset = (size - srcHeight * scale) / 2;

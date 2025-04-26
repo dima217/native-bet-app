@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ToastAndroid, Platform, Alert } from 'react-native';
 import { Match } from '@/types/types';
 import { ThemedView } from '../ui/ThemedView';
 import { ThemedText } from '../ui/ThemedText';
@@ -9,6 +9,7 @@ import Clock from '../../assets/images/clock 1.svg';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import BetKeyboard from '../../components/BetKeyBoard';
 import { useUserBets } from '@/hooks/useUserBets';
+import { router } from 'expo-router'; 
 
 export default function MatchDetailsCard({
   match,
@@ -44,11 +45,21 @@ export default function MatchDetailsCard({
 
     try {
       await placeBet(match.id, amount, selectedOutcome);
+
       setShowKeyboard(false);
       setSelectedOutcome(undefined);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Ставка успешно сделана!', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Успех', 'Ставка успешно сделана!');
+      }
+
+      router.push('/bets'); 
+
     } catch (error) {
       console.error('Failed to place bet:', error);
-    } 
+    }
   };
 
   return (
