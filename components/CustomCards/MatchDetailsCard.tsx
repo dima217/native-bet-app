@@ -10,6 +10,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import BetKeyboard from '../../components/BetKeyBoard';
 import { useUserBets } from '@/hooks/useUserBets';
 import { router } from 'expo-router'; 
+import Toast from 'react-native-toast-message';
 
 export default function MatchDetailsCard({
   match,
@@ -50,15 +51,25 @@ export default function MatchDetailsCard({
       setSelectedOutcome(undefined);
 
       if (Platform.OS === 'android') {
-        ToastAndroid.show('Ставка успешно сделана!', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'success',           
+          text1: 'Bet Placed!',
+          text2: 'Your bet has been placed successfully!',
+          visibilityTime: 3000,     
+          position: 'top',           
+        });
       } else {
-        Alert.alert('Успех', 'Ставка успешно сделана!');
+        Alert.alert('Success', 'Bet has been placed successfully!!');
       }
 
       router.push('/bets'); 
 
     } catch (error) {
-      console.error('Failed to place bet:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to place bet!',
+      });
     }
   };
 

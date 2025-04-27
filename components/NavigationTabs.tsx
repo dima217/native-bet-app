@@ -2,10 +2,17 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { Colors } from '@/constants/Colors';
-import Trophy from '../assets/images/trophy1.svg';
-import Burger from '../assets/images/burger1.svg';
-import User from '../assets/images/User.svg';
-import Swords from '../assets/images/Swords.svg';
+import { ThemedText } from '@/components/ui/ThemedText';
+
+// Import Icons
+import TrophyActive from '../assets/images/TrophyActive.svg';
+import TrophyInactive from '../assets/images/TrophyInactive.svg';
+import BurgerActive from '../assets/images/BurgerActive.svg';
+import BurgerInactive from '../assets/images/BurgerInactive.svg';
+import UserActive from '../assets/images/UserActive.svg';
+import UserInactive from '../assets/images/UserInactive.svg';
+import SwordsActive from '../assets/images/SwordsActive.svg';
+import SwordsInactive from '../assets/images/SwordsInactive.svg';
 
 type Tab = 'matches' | 'bets' | 'profile' | 'leaders';
 
@@ -16,29 +23,37 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
   const themeColors = {
     background: Colors[theme].tab,
     border: Colors[theme].borderTab,
-    iconColor: Colors[theme].text,
+    iconColor: Colors[theme].textInactive,
   };
 
   const tabs = [
     {
       key: 'matches',
-      icon: (isActive: boolean) => <Trophy width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      iconActive: <TrophyActive width={28} height={28} />,
+      iconInactive: <TrophyInactive width={28} height={28} />,
       route: '/(app)/matches',
+      label: 'Play',
     },
     {
       key: 'bets',
-      icon: (isActive: boolean) => <Swords width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      iconActive: <SwordsActive width={28} height={28} />,
+      iconInactive: <SwordsInactive width={28} height={28} />,
       route: '/(app)/bets',
+      label: 'My votes',
     },
     {
-      key: 'menu',
-      icon: (isActive: boolean) => <Burger width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      key: 'leaders',
+      iconActive: <BurgerActive width={28} height={28} />,
+      iconInactive: <BurgerInactive width={28} height={28} />,
       route: '/(app)/leaders',
+      label: 'Leaders',
     },
     {
       key: 'profile',
-      icon: (isActive: boolean) => <User width={28} height={28} fill={isActive ? '#fff' : themeColors.iconColor} />,
+      iconActive: <UserActive width={28} height={28} />,
+      iconInactive: <UserInactive width={28} height={28} />,
       route: '/(app)/profile',
+      label: 'My account',
     },
   ] as const;
 
@@ -57,10 +72,19 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
         return (
           <TouchableOpacity
             key={tab.key}
-            style={styles.tab}
+            style={[styles.tab, isActive && styles.activeTab]}
             onPress={() => router.replace(tab.route)}
           >
-            <View>{tab.icon(isActive)}</View>
+            <View style={styles.iconContainer}>
+              {isActive ? tab.iconActive : tab.iconInactive}
+              <ThemedText style={[
+                styles.tabLabel,
+                { color: isActive ? '#fff' : themeColors.iconColor },
+                isActive && styles.activeLabel,
+              ]}>
+                {tab.label}
+              </ThemedText>
+            </View>
           </TouchableOpacity>
         );
       })}
@@ -84,5 +108,20 @@ const styles = StyleSheet.create({
   tab: {
     padding: 10,
     borderRadius: 12,
+    alignItems: 'center',
+  },
+  activeTab: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+  },
+  iconContainer: {
+    alignItems: 'center',
+  },
+  tabLabel: {
+    marginTop: 4,
+    fontSize: 10,
+    fontWeight: '500',
+  },
+  activeLabel: {
+    fontWeight: 'bold',
   },
 });

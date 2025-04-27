@@ -3,6 +3,7 @@ import MoneyBag from '../assets/images/Money bag.svg';
 import { ThemedView } from "./ui/ThemedView";
 import { StyleSheet } from "react-native";
 import { BackButton } from "./ui/Buttons/BackButton";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
   label: string;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function BaseHeader({ label, goBack = false }: Props) {
+  const { user } = useAuth();
+
   if (goBack) {
     return (
       <ThemedView style={styles.containerWithBack}>
@@ -20,7 +23,7 @@ export default function BaseHeader({ label, goBack = false }: Props) {
         </ThemedText>
 
         <ThemedView style={styles.money}>
-          <ThemedText>0 gg</ThemedText>
+          <ThemedText>{user?.balance}</ThemedText>
           <MoneyBag width={35} height={35} />
         </ThemedView>
       </ThemedView>
@@ -32,7 +35,7 @@ export default function BaseHeader({ label, goBack = false }: Props) {
       <ThemedText type="title">{label}</ThemedText>
 
       <ThemedView style={styles.money}>
-        <ThemedText>0 gg</ThemedText>
+        <ThemedText>{user?.balance}</ThemedText>
         <MoneyBag width={35} height={35} />
       </ThemedView>
     </ThemedView>
