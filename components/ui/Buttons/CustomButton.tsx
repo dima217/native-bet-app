@@ -1,12 +1,13 @@
 // components/ui/CustomButton.tsx
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { 
   TouchableOpacity, 
   Text, 
   ActivityIndicator, 
   StyleSheet, 
   ViewStyle, 
-  useColorScheme 
+  useColorScheme, 
+  View
 } from 'react-native';
 
 type ButtonProps = {
@@ -15,6 +16,7 @@ type ButtonProps = {
   loading?: boolean;
   variant?: 'primary' | 'secondary' | 'outline';
   style?: ViewStyle;
+  icon?: ReactNode; 
 };
 
 export default function CustomButton({
@@ -23,6 +25,7 @@ export default function CustomButton({
   loading = false,
   variant = 'primary',
   style,
+  icon,
 }: ButtonProps) {
   const theme = useColorScheme();
   
@@ -53,13 +56,16 @@ export default function CustomButton({
         style,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator color={textColors[variant]} />
-      ) : (
-        <Text style={[styles.text, { color: textColors[variant] }]}>
-          {title}
-        </Text>
-      )}
+     {loading ? (
+  <ActivityIndicator color={textColors[variant]} />
+  ) : (
+  <View style={styles.content}>
+    {icon && <View style={styles.iconWrapper}>{icon}</View>}
+    <Text style={[styles.text, { color: textColors[variant] }]}>
+      {title}
+    </Text>
+  </View>
+)}
     </TouchableOpacity>
   );
 }
@@ -78,4 +84,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-SemiBold',
   },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconWrapper: {
+    marginRight: 8,
+  },
+  
 });

@@ -54,7 +54,7 @@ export type User = {
 
   export type Match = {
     id: number;
-    beginAt: Date;
+    beginAt: string;
     time: string;
     sportType: SportType;
     status: MatchStatus;

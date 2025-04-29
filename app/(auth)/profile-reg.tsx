@@ -12,6 +12,7 @@ import CustomButton from '@/components/ui/Buttons/CustomButton';
 import { ImagePickerButton } from '@/components/ImagePickerButton';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
+import { SkiaAvatar } from '../../components/SkiaAvatar';
 
 type FormData = {
   username: string;
@@ -37,7 +38,7 @@ export default function ProfileRegScreen() {
     }
   
     try {
-      let avatarUrl = null;
+      let imageUrl = null;
   
       if (image) {
         const formData = new FormData();
@@ -54,18 +55,17 @@ export default function ProfileRegScreen() {
         });        
   
         const result = response.data.avatarUrl;
-        avatarUrl = result;
+        imageUrl = result;
       }
   
       await register({
-        email,
         username: data.username,
+        email: email,
         password: data.password,
         balance: initialBalance,
-        image: avatarUrl, 
+        avatarUrl: imageUrl, 
       });
-  
-      router.replace('/(app)/matches');
+
     } catch (err: any) {
       setError(err.message || 'Registration failed');
     }

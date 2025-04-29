@@ -10,6 +10,9 @@ import CustomAvatar from '@/components/ui/CustomAvatar';
 import { useRouter } from 'expo-router';
 import { Routes } from '@/types/navigationTypes';
 import { API_URL } from '@/config';
+import Settings from '../../assets/images/settings 1.svg'
+import Edit from '../../assets/images/edit (2) 2.svg'
+import Link from '../../assets/images/link (1) 1.svg'
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -38,14 +41,17 @@ export default function ProfileScreen() {
         <CustomButton
           title="Settings"
           onPress={() => router.push('/(app)/(profile)/settings')}
+          icon={<Settings width={24} height={24}/>}
         />
         <CustomButton
           title="Edit Profile"
           onPress={() => router.push('/(app)/(profile)/editProfile')}
+          icon={<Edit width={24} height={24}/>}
         />
         <CustomButton
           title="Link other accounts"
           onPress={() => router.push('/(app)/(profile)/linkAccounts')}
+          icon={<Link width={24} height={24}/>}
         />
       </ThemedView>
 

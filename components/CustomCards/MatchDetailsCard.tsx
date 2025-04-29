@@ -64,13 +64,21 @@ export default function MatchDetailsCard({
 
       router.push('/bets'); 
 
-    } catch (error) {
+    } catch (error: unknown) {
+      let message = 'Failed to place bet!';
+    
+      if (error instanceof Error) {
+        message = error.message;
+      }
+    
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: 'Failed to place bet!',
+        text2: message,
+        visibilityTime: 3000,
+        position: 'top',
       });
-    }
+    }    
   };
 
   return (

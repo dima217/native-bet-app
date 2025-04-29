@@ -18,7 +18,7 @@ type AuthContextType = {
     email: string;
     password: string;
     balance: number;
-    image?: string;
+    avatarUrl?: string;
   }) => Promise<void>;
   uploadImage: (image: string) => Promise<string>;
   sendCode: (email: string) => Promise<void>;
@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { data } = await axios.post('/auth/email/verify-code', { email, code });
       if (data === true) {
-        router.replace('/(auth)/profile-reg');
+        router.push({ pathname: '/(auth)/profile-reg', params: { email: email } });
       }
     } catch (error: any) {
       const message = error.response?.data?.message || 'Code verification error';
@@ -161,7 +161,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string;
     password: string;
     balance: number;
-    image?: string; 
+    avatarUrl?: string; 
   }) => {
     setIsLoading(true);
     resetError();
@@ -169,16 +169,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       let avatarUrl: string | undefined;
   
-      if (data.image) {
-        avatarUrl = await uploadImage(data.image);
+      if (data.avatarUrl) {
+        avatarUrl = await uploadImage(data.avatarUrl);
       }
+
+      console.log('Email being sent:', data.email);
 
       const response = await axios.post('/users', {
         username: data.username,
         email: data.email,
         password: data.password,
         balance: data.balance,
-        avatar: avatarUrl,
+        avatarUrl: avatarUrl,
       });
   
       await storeToken(response.data.token);
