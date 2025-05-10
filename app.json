@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "test-native-app",
-    "slug": "test-native-app",
+    "name": "Expert",
+    "slug": "Expert",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/AppIcon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/AppIcon.png",
         "backgroundColor": "#ffffff"
       },
       "softwareKeyboardLayoutMode": "pan",
@@ -35,7 +35,9 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
@@ -45,7 +47,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "23704d8e-7bf9-4a5a-93d9-cf681f1a2655"
+        "projectId": "7ed6ab4b-ed04-4f9f-819a-409502799458"
       }
     },
     "owner": "dima217"

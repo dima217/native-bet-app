@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { ThemedView } from './ui/ThemedView';
 
-const keypadNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const keypadNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
 export default function BetKeyboard({
   onCancel,
@@ -16,22 +16,33 @@ export default function BetKeyboard({
   const [amount, setAmount] = useState('');
 
   const handleKeyPress = (key: string) => {
-    if (key === 'del') {
-      setAmount((prev) => prev.slice(0, -1));
-    } else if (key === '+') {
-      setAmount((prev) => String(Number(prev || '0') + 1));
-    } else if (key === '-') {
-      setAmount((prev) => String(Math.max(Number(prev || '0') - 1, 0)));
-    } else {
-      setAmount((prev) => (prev + key).slice(0, 4));
-    }
+    setAmount((prev) => {
+      let value = prev;
+
+      if (key === 'del') {
+        return value.slice(0, -1);
+      }
+
+      if (key === '+') {
+        return String(Math.min(Number(value || '0') + 1, 9999));
+      }
+
+      if (key === '-') {
+        return String(Math.max(Number(value || '0') - 1, 0));
+      }
+
+      if (value === '0') value = '';
+
+      if (value.length >= 4) return value;
+
+      return value + key;
+    });
   };
 
-  return (
-    <View style={
-        [styles.container, style]
-    }>
+  const parsedAmount = Number(amount || '0');
 
+  return (
+    <View style={[styles.container, style]}>
       <View style={styles.inputRow}>
         <TouchableOpacity onPress={onCancel} style={styles.outlineBtn}>
           <Text style={styles.outlineText}>Cancel</Text>
@@ -47,7 +58,7 @@ export default function BetKeyboard({
           </TouchableOpacity>
 
           <View style={styles.amountBox}>
-            <Text style={styles.amountText}>{amount || '0'}</Text>
+            <Text style={styles.amountText}>{parsedAmount}</Text>
           </View>
 
           <TouchableOpacity onPress={() => handleKeyPress('+')} style={styles.sideControl}>
@@ -69,7 +80,7 @@ export default function BetKeyboard({
       </ThemedView>
 
       <TouchableOpacity
-        onPress={() => onConfirm(Number(amount || '0'))}
+        onPress={() => onConfirm(parsedAmount)}
         style={styles.voteBtn}
       >
         <Text style={styles.voteText}>Vote</Text>
@@ -142,7 +153,7 @@ const styles = StyleSheet.create({
     },
     keyboard: {
       backgroundColor: 'transparent',
-      maxHeight: 160,
+      maxHeight: 210,
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'center',
@@ -155,7 +166,7 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       justifyContent: 'center',
       alignItems: 'center',
-      marginVertical: 4,
+      marginVertical: 2,
     },
     keyText: {
       color: '#000',

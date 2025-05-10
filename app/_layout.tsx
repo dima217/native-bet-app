@@ -4,9 +4,20 @@ import { useColorScheme } from '../hooks/useColorScheme';
 import { Colors } from '../constants/Colors';
 import Toast from 'react-native-toast-message'; 
 import { toastConfig } from '@/components/ui/Toasts/CustomToasts'; 
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme() || 'light';
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync('transparent')
+      NavigationBar.setButtonStyleAsync('light');
+      NavigationBar.setBehaviorAsync('overlay-swipe'); 
+    }
+  }, []);
 
   return (
     <AuthProvider>

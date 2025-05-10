@@ -1,5 +1,14 @@
-import { FlatList, StyleSheet, RefreshControl, StatusBar, View } from 'react-native';
-import { useState, useEffect } from 'react';
+import {
+  Animated,
+  FlatList,
+  RefreshControl,
+  StatusBar,
+  StyleSheet,
+  View,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { ThemedText } from '@/components/ui/ThemedText';
 import MatchCard from '@/components/CustomCards/MatchCard';
@@ -11,8 +20,7 @@ import BaseHeader from '@/components/BaseHeader';
 import GamesScroll from '@/components/GameScroll';
 import { Match, SportType } from '@/types/types';
 import CustomButtonGroup from '@/components/ui/Buttons/CustomButtonGroup';
-import { UserBetsProvider } from '@/contexts/UserBetsContext';
-import { isToday, isTomorrow, isThisWeek, parseISO } from 'date-fns';
+import { isToday, isTomorrow, isThisWeek } from 'date-fns';
 
 export default function MatchesScreen() {
   const { user } = useAuth();
@@ -21,13 +29,17 @@ export default function MatchesScreen() {
   const [selectedGameId, setSelectedGameId] = useState<SportType>(SportType.LOL);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
+  const tabTranslateY = useRef(new Animated.Value(0)).current;
+  const tabOpacity = useRef(new Animated.Value(1)).current;
+
+  const lastOffsetY = useRef(0);
+
   useEffect(() => {
     if (user) refreshMatches();
   }, [user]);
 
   const filteredMatches = matches.filter((match) => {
     const matchDate = new Date(match.beginAt);
-
     const isDateMatch = (() => {
       switch (selectedFilter) {
         case 'Today':
@@ -41,10 +53,40 @@ export default function MatchesScreen() {
       }
     })();
 
-    const isGameMatch = match.sportType === selectedGameId;
-
-    return isDateMatch && isGameMatch;
+    return isDateMatch && match.sportType === selectedGameId;
   });
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+
+    if (offsetY > lastOffsetY.current + 10) {
+      // Scroll down
+      Animated.timing(tabTranslateY, {
+        toValue: 100,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      Animated.timing(tabOpacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else if (offsetY < lastOffsetY.current - 10) {
+      // Scroll up
+      Animated.timing(tabTranslateY, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      Animated.timing(tabOpacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+
+    lastOffsetY.current = offsetY;
+  };
 
   return (
     <>
@@ -52,49 +94,63 @@ export default function MatchesScreen() {
       <BaseHeader label="Play" />
 
       <ThemedView style={styles.container}>
-      <GamesScroll selectedGame={selectedGameId} onSelect={setSelectedGameId} />
+        <GamesScroll selectedGame={selectedGameId} onSelect={setSelectedGameId} />
 
-      {!selectedMatch && (
+        {!selectedMatch && (
+          <View style={styles.button}>
+            <CustomButtonGroup
+              options={['Today', 'Tomorrow', 'This week']}
+              selected={selectedFilter}
+              onSelect={setSelectedFilter}
+            />
+          </View>
+        )}
 
-      <View style={styles.button}>
-      <CustomButtonGroup
-        options={['Today', 'Tomorrow', 'This week']}
-        selected={selectedFilter}
-        onSelect={setSelectedFilter}
-      />
-      </View>
-
-      )}
         {selectedMatch ? (
           <View style={styles.detailsWrapper}>
-             <MatchDetailsCard match={selectedMatch} onBack={() => setSelectedMatch(null)} />
+            <MatchDetailsCard match={selectedMatch} onBack={() => setSelectedMatch(null)} />
           </View>
-          ) : (
+        ) : (
           <FlatList
             data={filteredMatches}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-            <MatchCard match={item} onPress={() => setSelectedMatch(item)} />
-          )}
-          contentContainerStyle={styles.list}
-          refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={refreshMatches} />
-          }
-         ListEmptyComponent={
-          <ThemedText style={styles.empty}>
-            {error || 'No available matches'}
-         </ThemedText>
-          }
-         />
+              <MatchCard match={item} onPress={() => setSelectedMatch(item)} />
+            )}
+            contentContainerStyle={styles.list}
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshMatches} />}
+            ListEmptyComponent={
+              <ThemedText style={styles.empty}>
+                {error || 'No available matches'}
+              </ThemedText>
+            }
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+          />
         )}
-      <NavigationTabs currentScreen="matches" />
+
+        <Animated.View
+          style={[
+            styles.navigationWrapper,
+            {
+              transform: [{ translateY: tabTranslateY }],
+              opacity: tabOpacity,
+            },
+          ]}
+        >
+          <NavigationTabs currentScreen="matches" />
+        </Animated.View>
       </ThemedView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    padding: 5,
+    paddingTop: 5,
+  },
   detailsWrapper: {
     position: 'absolute',
     top: 90,
@@ -102,15 +158,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10,
     paddingHorizontal: 16,
-  },
-  container: {
-    flex: 1,
-    padding: 5,
-    paddingTop: 5,
-    paddingBottom: 83,
-  },
-  filterButton: {
-    flex: 1,
   },
   list: {
     paddingBottom: 24,
@@ -121,6 +168,14 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   button: {
-    marginVertical: 10
-  }
+    marginVertical: 10,
+  },
+  navigationWrapper: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 83,
+    backgroundColor: '#000',
+  },
 });

@@ -94,9 +94,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   win: {
+    borderWidth: 1,
     borderColor: '#FFD700',
   },
   lose: {
+    borderWidth: 1,
     borderColor: '#D32F2F',
   },
   active: {

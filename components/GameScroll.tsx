@@ -15,7 +15,7 @@ type GameItem = {
 const games: GameItem[] = [
   { id: SportType.LOL, name: 'League of Legends', Icon: LeagueOfLegendsIcon },
   { id: SportType.CSGO, name: 'Counter-Strike', Icon: CounterStrikeIcon },
-  { id: SportType.VALORANT, name: 'Valorant', Icon: ValorantIcon },
+  { id: SportType.DOTA2, name: 'Valorant', Icon: ValorantIcon },
 ];
 
 export default function GamesScroll({
@@ -30,14 +30,16 @@ export default function GamesScroll({
       {games.map((game) => (
         <TouchableOpacity
           key={game.id}
-          style={styles.item}
+          style={[
+            styles.item,
+            selectedGame === game.id && styles.selectedTitle
+          ]}
           onPress={() => onSelect(game.id)}
         >
           <game.Icon width={40} height={40} />
           <ThemedText
             style={[
-              styles.title,
-              selectedGame === game.id && styles.selectedTitle
+              styles.title
             ]}
           >
             {game.name}
@@ -59,13 +61,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 18,
     gap: 5,
+    paddingBottom: 6,
+    borderBottomWidth: 2,
+    borderColor: 'transparent',
   },
   title: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.6)',
   },
   selectedTitle: {
-    color: 'white',
-    textDecorationLine: 'underline',
+    borderColor: 'white',
   },
 });

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import ScreenWrapper from "@/components/BaseWrappers/ScreenWrapper";
 import CustomButton from "@/components/ui/Buttons/CustomButton";
-import { Controller, FieldError, useForm } from "react-hook-form";
+import { Controller, FieldError, useForm } from 'react-hook-form';
 import { useAuth } from "../../hooks/useAuth";
 import Timer from "@/components/ui/timer";
 import CustomInput from "@/components/ui/Inputs/CustomInput";

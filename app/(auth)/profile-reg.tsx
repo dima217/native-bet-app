@@ -38,8 +38,7 @@ export default function ProfileRegScreen() {
     }
   
     try {
-      let imageUrl = null;
-  
+      var imageUrl = '';
       if (image) {
         const formData = new FormData();
         formData.append('file', {
@@ -65,8 +64,8 @@ export default function ProfileRegScreen() {
         balance: initialBalance,
         avatarUrl: imageUrl, 
       });
-
-    } catch (err: any) {
+    } catch (err: unknown) {
+      if (err instanceof Error)
       setError(err.message || 'Registration failed');
     }
   };

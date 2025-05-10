@@ -5,7 +5,7 @@ import { ImagePickerButton } from "@/components/ImagePickerButton";
 import { ThemedView } from "@/components/ui/ThemedView";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { FieldError, useForm } from "react-hook-form";
-import { Alert, StatusBar, StyleSheet, Text } from 'react-native';
+import { Alert, StatusBar, StyleSheet, Text, ActivityIndicator, View } from 'react-native';
 import axios from 'axios';
 import { useAuth } from '../../../hooks/useAuth';
 import { useState } from "react";
@@ -17,18 +17,22 @@ type FormData = {
 };
 
 export default function EditProfileScreen() {
-  const { user } = useAuth(); 
+  const { user, isLoading } = useAuth(); 
 
   const defaultUri = RNImage.resolveAssetSource(
     require("../../../assets/images/Def-Ava.png")
   ).uri;
 
   const { image, pickImage } = useImagePicker();
-  const displayedImage = image || `${API_URL}${user?.avatarUrl}`|| defaultUri;
+  const displayedImage = image || (user?.avatarUrl ? `${API_URL}${user.avatarUrl}` : defaultUri);
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+    defaultValues: {
+      username: user?.username || '',
+    }
+  });
+
   const [error, setError] = useState('');
-
 
   const getErrorMessage = (error: FieldError | undefined): string | undefined => {
     return error?.message;
@@ -36,37 +40,43 @@ export default function EditProfileScreen() {
 
   const onSubmit = async (data: FormData) => {
     try {
-     var avatarUrl = '';   
-     if (image) {
+      let avatarUrl = user?.avatarUrl || '';   
+
+      if (image) {
         const formData = new FormData();
         formData.append('file', {
-            uri: image,
-            name: 'avatar.jpg',
-            type: 'image/jpeg',
+          uri: image,
+          name: 'avatar.jpg',
+          type: 'image/jpeg',
         } as any);
-      
-         const response = await axios.post('/image/upload', formData, {
-         headers: {
-        'Content-Type': 'multipart/form-data',
-        },
-      });  
 
-      const result = response.data.avatarUrl;
-      avatarUrl = result;
-    }
-      await axios.put(
-        '/users/profile/update',
-        {
-          id: user?.id,
-          username: data.username,
-          avatarUrl: avatarUrl,
-        },
-      );
+        const response = await axios.post('/image/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        avatarUrl = response.data.avatarUrl;
+      }
+
+      await axios.put('/users/profile/update', {
+        username: data.username,
+        avatarUrl,
+      });
+
       Alert.alert("Success", "Profile updated successfully!");
     } catch (err: any) {
       setError(err?.message || 'Unknown error');
     }
   };
+
+  if (isLoading || !user) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -82,7 +92,6 @@ export default function EditProfileScreen() {
           name="username"
           placeholder="Username"
           rules={{
-            required: 'Name is required',
             minLength: {
               value: 2,
               message: 'Name must be at least 2 characters'
@@ -119,5 +128,10 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 10,
     marginTop: -10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
