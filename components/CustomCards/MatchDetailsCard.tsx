@@ -6,11 +6,11 @@ import { ThemedText } from '../ui/ThemedText';
 import MatchLine from '../ui/MatchLine';
 import CustomButton from '../ui/Buttons/CustomButton';
 import Clock from '../../assets/images/clock 1.svg';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import BetKeyboard from '../../components/BetKeyBoard';
 import { useUserBets } from '@/hooks/useUserBets';
 import { router } from 'expo-router'; 
 import Toast from 'react-native-toast-message';
+import { Colors } from '../../constants/Colors';
 
 export default function MatchDetailsCard({
   match,
@@ -19,7 +19,7 @@ export default function MatchDetailsCard({
   match: Match;
   onBack: () => void;
 }) {
-  const cardColor = useThemeColor({}, 'cardBackground');
+  const cardColor = Colors.colors.cardBackground;
   const { placeBet } = useUserBets();
 
   const [showKeyboard, setShowKeyboard] = useState(false);

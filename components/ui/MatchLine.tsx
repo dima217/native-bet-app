@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { ThemedView } from './ThemedView';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { ThemedText } from './ThemedText';
 import TeamCard from './TeamCard';
+import { Colors } from '../../constants/Colors';
 
 type Props = {
   teamA: string;
@@ -23,7 +23,7 @@ export default function MatchLine({
   selectable = false,
   onSelectTeam,
 }: Props) {
-  const cardColor = useThemeColor({}, 'cardBackground');
+  const cardColor = Colors.colors.cardBackground;
 
   const handleSelect = (team: string) => {
     if (selectable && onSelectTeam) {

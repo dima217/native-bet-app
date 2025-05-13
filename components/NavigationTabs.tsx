@@ -21,9 +21,9 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
   const router = useRouter();
 
   const themeColors = {
-    background: Colors[theme].tab,
-    border: Colors[theme].borderTab,
-    iconColor: Colors[theme].textInactive,
+    background: Colors.colors.tab,
+    border: Colors.colors.borderTab,
+    iconColor: Colors.colors.textInactive,
   };
 
   const tabs = [
@@ -72,7 +72,7 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
         return (
           <TouchableOpacity
             key={tab.key}
-            style={[styles.tab, isActive && styles.activeTab]}
+            style={[styles.tab]}
             onPress={() => router.replace(tab.route)}
           >
             <View style={styles.iconContainer}>
@@ -109,9 +109,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 12,
     alignItems: 'center',
-  },
-  activeTab: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)', 
   },
   iconContainer: {
     alignItems: 'center',

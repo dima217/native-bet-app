@@ -2,16 +2,16 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../ui/ThemedText';
 import { ThemedView } from '../ui/ThemedView';
 import { Match } from '../../types/types';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from '../ui/MatchLine';
 import Clock from '../../assets/images/clock 1.svg';
 import { useUserBetsContext } from '@/contexts/UserBetsContext';
 import { timeUntil } from '@/custom/dateUtils';
+import { Colors } from '../../constants/Colors';
 
 export default function MatchCard({ match, onPress }: { match: Match, onPress: () => void }) {
   const { bets } = useUserBetsContext();
-  const cardColor = useThemeColor({}, 'cardBackground');
-  const tintColor = useThemeColor({}, 'tint');
+  const cardColor = Colors.colors.cardBackground;
+  const tintColor = Colors.colors.tint;
 
   const userBet = bets.find((bet) => bet.match.id === match.id);
 

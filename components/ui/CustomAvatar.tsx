@@ -1,7 +1,7 @@
-import { StyleSheet, View, Image as RNImage } from "react-native";
-import { SkiaAvatar } from "../SkiaAvatar";
-import React from "react";
-import { ThemedView } from "./ThemedView";
+import React from 'react';
+import { StyleSheet, View, Image as RNImage } from 'react-native';
+import { SkiaAvatar } from '../SkiaAvatar';
+import { ThemedView } from './ThemedView';
 
 type Props = {
   size: number;
@@ -10,14 +10,14 @@ type Props = {
 
 export default function CustomAvatar({ size, image }: Props) {
   const defaultUri = RNImage.resolveAssetSource(
-    require("../../assets/images/Def-Ava.png")
-).uri;
+    require('../../assets/images/Def-Ava.png')
+  ).uri;
 
   return (
     <View style={styles.wrapper}>
       <ThemedView>
         <View style={[styles.circle, { width: size, height: size, borderRadius: size / 2 }]}>
-          <SkiaAvatar uri={image ? image : defaultUri} size={size} />
+          <SkiaAvatar uri={image || defaultUri} size={size} />
         </View>
       </ThemedView>
     </View>
@@ -26,16 +26,13 @@ export default function CustomAvatar({ size, image }: Props) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   circle: {
-    borderColor: 'transparent',
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    position: "relative",
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    backgroundColor: 'transparent',
   },
 });

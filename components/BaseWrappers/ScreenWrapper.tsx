@@ -18,7 +18,7 @@ export default function ScreenWrapper({ children, withScroll = true }: Props) {
 
   return (
     <LinearGradient
-      colors={Colors.dark.gradientBackground}
+      colors={Colors.colors.gradientBackground}
       start={{ x: 1, y: 0.1 }}
       end={{ x: 0.9, y: 0.9 }}
       locations={[0.3, 0.8]}

@@ -2,12 +2,12 @@ import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '../../components/ui/ThemedText';
 import { Bet } from '../../types/types';
 import { ThemedView } from '../ui/ThemedView';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import MatchLine from '../ui/MatchLine';
 import { formatDate } from '@/custom/dateUtils';
+import { Colors } from '@/constants/Colors';
 
 export default function BetCard({ bet }: { bet: Bet }) {
-  const cardBackground = useThemeColor({}, 'cardBackground');
+  const cardBackground = Colors.colors.cardBackground;
 
   const getStatusStyle = () => {
     if (bet.status === 'win') return styles.win;

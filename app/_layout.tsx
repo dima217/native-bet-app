@@ -9,7 +9,6 @@ import { Platform } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme() || 'light';
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -27,10 +26,10 @@ export default function RootLayout() {
             animation: "slide_from_right",
             headerShown: false,
             headerStyle: {
-              backgroundColor: Colors[colorScheme].background,
+              backgroundColor: Colors.colors.background,
             },
             contentStyle: {
-              backgroundColor: Colors[colorScheme].background,
+              backgroundColor: Colors.colors.background,
             },
           }}
         >

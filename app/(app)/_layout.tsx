@@ -14,10 +14,10 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           headerStyle: {
-            backgroundColor: Colors[colorScheme].background,
+            backgroundColor: Colors.colors.background,
           },
           contentStyle: {
-            backgroundColor: Colors[colorScheme].background,
+            backgroundColor: Colors.colors.background,
           },
         }}
       >

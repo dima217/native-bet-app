@@ -2,8 +2,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
 import Swords from '../../assets/images/Icon.svg';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { SkiaAvatar } from '../../components/SkiaAvatar';
+import { Colors } from '../../constants/Colors';
 
 type Props = {
   team: string;
@@ -15,8 +15,8 @@ type Props = {
 };
 
 export default function TeamCard({ team, image, index = 1, selected, selectable, onPress }: Props) {
-  const cardBorder = useThemeColor({}, 'border');
-  const selectedColor = useThemeColor({}, 'tint');
+  const cardBorder = Colors.colors.border;
+  const selectedColor = Colors.colors.tint;
 
   const content = (
     <View

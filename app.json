@@ -1,13 +1,18 @@
 {
   "expo": {
-    "name": "Expert",
-    "slug": "Expert",
+    "name": "Expert-PikulikD",
+    "slug": "Expert-PikulikD",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/AppIcon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/AppIcon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -26,15 +31,6 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
       "expo-asset",
       "expo-font",
       "expo-web-browser"
@@ -47,7 +43,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "7ed6ab4b-ed04-4f9f-819a-409502799458"
+        "projectId": "13b59038-5db9-4719-a8d4-6f04820605f3"
       }
     },
     "owner": "dima217"

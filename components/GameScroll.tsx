@@ -53,7 +53,7 @@ export default function GamesScroll({
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 30,
     height: 60,
   },
   item: {

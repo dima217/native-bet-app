@@ -7,6 +7,7 @@ import {
   View,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  TouchableOpacity,
 } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { ThemedView } from '@/components/ui/ThemedView';
@@ -29,14 +30,18 @@ export default function MatchesScreen() {
   const [selectedGameId, setSelectedGameId] = useState<SportType>(SportType.LOL);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [matchesPerPage, setMatchesPerPage] = useState(20);
+
   const tabTranslateY = useRef(new Animated.Value(0)).current;
   const tabOpacity = useRef(new Animated.Value(1)).current;
 
   const lastOffsetY = useRef(0);
 
   useEffect(() => {
-    if (user) refreshMatches();
-  }, [user]);
+    if (user) refreshMatches(); 
+  }, [user, refreshMatches]);
 
   const filteredMatches = matches.filter((match) => {
     const matchDate = new Date(match.beginAt);
@@ -55,6 +60,13 @@ export default function MatchesScreen() {
 
     return isDateMatch && match.sportType === selectedGameId;
   });
+
+  // Paginate filtered matches
+  const totalPages = Math.max(1, Math.ceil(filteredMatches.length / matchesPerPage));
+  const safePage = Math.min(currentPage, totalPages); 
+  const startIdx = (safePage - 1) * matchesPerPage;
+  const paginatedMatches = filteredMatches.slice(startIdx, startIdx + matchesPerPage);
+
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -88,6 +100,12 @@ export default function MatchesScreen() {
     lastOffsetY.current = offsetY;
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
@@ -112,7 +130,7 @@ export default function MatchesScreen() {
           </View>
         ) : (
           <FlatList
-            data={filteredMatches}
+            data={paginatedMatches}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <MatchCard match={item} onPress={() => setSelectedMatch(item)} />
@@ -128,6 +146,29 @@ export default function MatchesScreen() {
             scrollEventThrottle={16}
           />
         )}
+
+        {/* Pagination Controls */}
+        <View style={styles.pagination}>
+          <TouchableOpacity
+            style={[styles.pageButton, { opacity: currentPage === 1 ? 0.5 : 1 }]}
+            disabled={currentPage === 1}
+            onPress={() => handlePageChange(currentPage - 1)}
+          >
+            <ThemedText style={styles.pageText}>Previous</ThemedText>
+          </TouchableOpacity>
+
+          <ThemedText style={styles.pageText}>
+            Page {currentPage} of {totalPages}
+          </ThemedText>
+
+          <TouchableOpacity
+            style={[styles.pageButton, { opacity: currentPage === totalPages ? 0.5 : 1 }]}
+            disabled={currentPage === totalPages}
+            onPress={() => handlePageChange(currentPage + 1)}
+          >
+            <ThemedText style={styles.pageText}>Next</ThemedText>
+          </TouchableOpacity>
+        </View>
 
         <Animated.View
           style={[
@@ -169,6 +210,22 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 10,
+  },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  pageButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+  },
+  pageText: {
+    color: 'white',
   },
   navigationWrapper: {
     position: 'absolute',

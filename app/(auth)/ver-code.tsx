@@ -96,7 +96,7 @@ export default function VerCode() {
       </ThemedView>
 
       <Text style={styles.description}>
-          We just sent a code to your email. Enter it below to verify your identity.
+          We just sent a code to your email. Enter it to verify your identity.
       </Text>
 
     </ScreenWrapper>
