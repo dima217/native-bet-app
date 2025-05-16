@@ -15,11 +15,9 @@ export default function CustomAvatar({ size, image }: Props) {
 
   return (
     <View style={styles.wrapper}>
-      <ThemedView>
         <View style={[styles.circle, { width: size, height: size, borderRadius: size / 2 }]}>
           <SkiaAvatar uri={image || defaultUri} size={size} />
         </View>
-      </ThemedView>
     </View>
   );
 }

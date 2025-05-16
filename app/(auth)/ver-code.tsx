@@ -102,7 +102,7 @@ export default function VerCode() {
     </ScreenWrapper>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

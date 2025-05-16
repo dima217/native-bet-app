@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#fff',
     fontSize: 16,
+    paddingLeft: 10,
     fontWeight: '600',
   },
   pointsContainer: {

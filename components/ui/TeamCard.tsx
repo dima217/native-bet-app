@@ -27,12 +27,12 @@ export default function TeamCard({ team, image, index = 1, selected, selectable,
         selected && styles.selected,
       ]}
     >
+       <ThemedText style={styles.teamName}>{team}</ThemedText>
       {image ? (
         <SkiaAvatar uri={image} size={28} />
       ) : (
         <Swords height={24} width={24} />
       )}
-      <ThemedText style={styles.teamName}>{team}</ThemedText>
     </View>
   );
 

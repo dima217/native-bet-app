@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { ThemedView } from './ui/ThemedView';
 
-const keypadNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+const row1 = ['1', '2', '3', '4', '5', '6'];
+const row2 = ['7', '8', '9', '0', '00'];
 
 export default function BetKeyboard({
   onCancel,
@@ -44,15 +45,7 @@ export default function BetKeyboard({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.inputRow}>
-        <TouchableOpacity onPress={onCancel} style={styles.outlineBtn}>
-          <Text style={styles.outlineText}>Cancel</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleKeyPress('del')} style={styles.outlineBtn}>
-          <Text style={styles.outlineText}>⌫</Text>
-        </TouchableOpacity>
-
-        <View style={styles.amountContainer}>
+      <View style={styles.amountContainer}>
           <TouchableOpacity onPress={() => handleKeyPress('-')} style={styles.sideControl}>
             <Text style={styles.controlText}>−</Text>
           </TouchableOpacity>
@@ -64,21 +57,44 @@ export default function BetKeyboard({
           <TouchableOpacity onPress={() => handleKeyPress('+')} style={styles.sideControl}>
             <Text style={styles.controlText}>+</Text>
           </TouchableOpacity>
-        </View>
       </View>
 
-      <ThemedView style={styles.keyboard}>
-        {keypadNumbers.map((num) => (
+      <TouchableOpacity onPress={() => handleKeyPress('del')} style={styles.outlineBtn}>
+          <Text style={styles.outlineText}>⌫</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={onCancel} style={styles.outlineBtn}>
+          <Text style={styles.outlineText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+
+     <View style = {styles.keyContainer}>
+     <View style={styles.keyboard}>
+      <View style={styles.keyRow}>
+        {row1.map((num) => (
+          <TouchableOpacity key={num} style={styles.key} onPress={() => handleKeyPress(num)}>
+             <Text style={styles.keyText}>{num}</Text>
+          </TouchableOpacity>
+          ))}
+      </View>
+      <View style={styles.keyRow}>
+      {row2.map((num) => {
+        const isDoubleWidth = num === '00';
+        return (
           <TouchableOpacity
             key={num}
-            style={styles.key}
-            onPress={() => handleKeyPress(num)}
-          >
-            <Text style={styles.keyText}>{num}</Text>
-          </TouchableOpacity>
-        ))}
-      </ThemedView>
-
+            style={[
+            styles.key,
+            isDoubleWidth && styles.doubleKey
+          ]}
+          onPress={() => handleKeyPress(num)}
+        >
+        <Text style={styles.keyText}>{num}</Text>
+      </TouchableOpacity>
+    );
+  })}
+</View>
+    </View>
       <TouchableOpacity
         onPress={() => onConfirm(parsedAmount)}
         style={styles.voteBtn}
@@ -86,6 +102,7 @@ export default function BetKeyboard({
         <Text style={styles.voteText}>Vote</Text>
         <Text style={styles.voteTextSmall}>win 2gg + bonus</Text>
       </TouchableOpacity>
+     </View>
     </View>
   );
 }
@@ -96,20 +113,26 @@ const styles = StyleSheet.create({
       marginTop: 10,
       borderTopLeftRadius: 16,
       borderTopRightRadius: 16,
+    },                            
+    keyContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     inputRow: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 8,
-      marginBottom: 16,
+      marginBottom: 10,
     },
     outlineBtn: {
-      height: 40,
+      height: 35,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1,
-      borderColor: '#666C7C',
+      borderColor: '#666666',
       borderRadius: 8,
       backgroundColor: 'transparent',
       flex: 2
@@ -120,16 +143,16 @@ const styles = StyleSheet.create({
     },
     amountContainer: {
       flexDirection: 'row',
-      borderRadius: 8,
+      borderRadius: 5,
       overflow: 'hidden',
       backgroundColor: '#fff',
       alignItems: 'center',
-      height: 40,
+      height: 35,
       minWidth: 120,
       flex: 1,
     },
     sideControl: {
-      width: 40,
+      width: 30,
       height: '100%',
       backgroundColor: '#E5E5E5',
       justifyContent: 'center',
@@ -151,37 +174,42 @@ const styles = StyleSheet.create({
       color: '#000',
       fontWeight: 'bold',
     },
-    keyboard: {
-      backgroundColor: 'transparent',
-      maxHeight: 210,
+    keyRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      gap: '2%',
+      justifyContent: 'space-between',
+      marginVertical: 4,
     },
     key: {
-      width: '32%',
-      height: 48,
-      backgroundColor: '#FFFFFF',
-      borderRadius: 8,
+      width: '13%',
+      height: 32,
+      backgroundColor: 'transparent',
+      borderRadius: 5,
       justifyContent: 'center',
       alignItems: 'center',
-      marginVertical: 2,
+      borderWidth: 1,
+      borderColor: '#666666',
+      marginRight: 4,
+    },
+    doubleKey: {
+      width: '30%' 
+    },
+    keyboard: {
+      flex: 1,
+      backgroundColor: 'transparent',
     },
     keyText: {
-      color: '#000',
+      color: '#fff',
       fontSize: 20,
     },
     voteBtn: {
-        width: '90%', 
-        marginTop: 30,
-        padding: 16,
-        backgroundColor: '#FFB800',
-        borderRadius: 28,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 54,
-        alignSelf: 'center', 
+      backgroundColor: '#FFB800',
+      borderRadius: 5,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 8,
+      width: '25%'
     },
     voteText: {
       color: '#fff',

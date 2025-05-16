@@ -20,6 +20,7 @@ export default function MatchDetailsCard({
   onBack: () => void;
 }) {
   const cardColor = Colors.colors.cardBackground;
+
   const { placeBet } = useUserBets();
 
   const [showKeyboard, setShowKeyboard] = useState(false);
@@ -107,7 +108,7 @@ export default function MatchDetailsCard({
           />
         ) : (
           <CustomButton
-            title="Draw"
+            title="Draw "
             onPress={handleDrawPress}
             style={styles.drawButton}
           />
@@ -144,10 +145,9 @@ const styles = StyleSheet.create({
   },
   drawButton: {
     borderWidth: 1,
-    borderColor: '#666C7C',
+    borderColor: '#666666',
     backgroundColor: 'transparent',
     borderRadius: 8,
-    marginHorizontal: 5,
     marginVertical: 25,
   },
   time: {
