@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function StreakTabs() {
-  const [selectedTab, setSelectedTab] = useState<'streak' | 'win'>('streak');
-
+export default function StreakTabs({
+  selected,
+  onSelect
+}: {
+  selected: string,
+  onSelect: (value: string) => void;
+}
+) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => setSelectedTab('streak')} style={styles.tab}>
+      <TouchableOpacity onPress={() => onSelect('streak')} style={styles.tab}>
         <Text style={styles.tabText}>Highest Streak</Text>
-        {selectedTab === 'streak' && <View style={styles.underline} />}
+        {selected === 'streak' && <View style={styles.underline} />}
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => setSelectedTab('win')} style={styles.tab}>
+      <TouchableOpacity onPress={() => onSelect('win')} style={styles.tab}>
         <Text style={styles.tabText}>Top Win</Text>
-        {selectedTab === 'win' && <View style={styles.underline} />}
+        {selected === 'win' && <View style={styles.underline} />}
       </TouchableOpacity>
     </View>
   );

@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View, ScrollView, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { ThemedView } from '@/components/ui/ThemedView';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,72 +23,78 @@ export default function ProfileScreen() {
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="#000000" />
-
       <BaseHeader label="My account" />
 
-      <View style={styles.avatar}>
-        <CustomAvatar size={90} image={avatarUri} />
-      </View>
-
-      <ThemedView style={[styles.container, { backgroundColor }]}>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.info}>{user?.username}</ThemedText>
-          <ThemedText style={styles.info}>{user?.email}</ThemedText>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.avatar}>
+          <CustomAvatar size={90} image={avatarUri} />
         </View>
 
-        <CustomButton
-          title="Settings"
-          onPress={() => router.push('/(app)/(profile)/settings')}
-          icon={<Settings width={24} height={24} />}
-        />
-        <CustomButton
-          title="Edit Profile"
-          onPress={() => router.push('/(app)/(profile)/editProfile')}
-          icon={<Edit width={24} height={24} />}
-        />
-        <CustomButton
-          title="Link other accounts"
-          onPress={() => router.push('/(app)/(profile)/linkAccounts')}
-          icon={<Link width={24} height={24} />}
-        />
-      </ThemedView>
+        <ThemedView style={[styles.container, { backgroundColor }]}>
+          <View style={styles.infoContainer}>
+            <ThemedText style={styles.info}>{user?.username}</ThemedText>
+            <ThemedText style={styles.info}>{user?.email}</ThemedText>
+          </View>
 
-      <CustomButton
-        title="Logout"
-        onPress={logout}
-        style={styles.button}
-      />
+          <CustomButton
+            title="Settings"
+            onPress={() => router.push('/(app)/(profile)/settings')}
+            icon={<Settings width={24} height={24} />}
+          />
+          <CustomButton
+            title="Edit Profile"
+            onPress={() => router.push('/(app)/(profile)/editProfile')}
+            icon={<Edit width={24} height={24} />}
+          />
+          <CustomButton
+            title="Link other accounts"
+            onPress={() => router.push('/(app)/(profile)/linkAccounts')}
+            icon={<Link width={24} height={24} />}
+          />
+        </ThemedView>
 
+        <CustomButton
+          title="Logout "
+          onPress={logout}
+          style={styles.button}
+        />
+      </ScrollView>
       <NavigationTabs currentScreen="profile" />
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 140,
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
   button: {
-    marginBottom: 125,
-    marginHorizontal: 45,
+    marginTop: 20,
+    width: '90%',
     backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: '#0166FE',
   },
   container: {
-    paddingHorizontal: 45,
+    width: '90%',
     marginTop: 8,
     flex: 1,
-    marginBottom: 15,
   },
   avatar: {
     marginTop: 25,
+    marginBottom: 15,
+    alignItems: 'center',
   },
   infoContainer: {
     alignItems: 'center',
+    marginBottom: 15,
     gap: 5,
-    marginBottom: 30,
   },
   info: {
-    fontSize: 18,
-    marginBottom: 15,
+    fontSize: 16,
     color: '#666',
   },
 });

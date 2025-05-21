@@ -27,7 +27,7 @@ export default function TeamCard({ team, image, index = 1, selected, selectable,
         selected && styles.selected,
       ]}
     >
-       <ThemedText style={styles.teamName}>{team}</ThemedText>
+      <ThemedText style={styles.teamName} type='teamCard'>{team}</ThemedText>
       {image ? (
         <SkiaAvatar uri={image} size={28} />
       ) : (
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   teamName: {
-    fontSize: 12,
     flexShrink: 1,
     flexWrap: 'wrap',
   },

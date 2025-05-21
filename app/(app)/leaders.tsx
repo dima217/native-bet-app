@@ -10,19 +10,20 @@ import { ThemedView } from "@/components/ui/ThemedView";
 import { View } from "lucide-react-native";
 
 export default function LeadersScreen() {
+  const [selectedTab, setSelectedTab] = useState<'streak' | 'win'>('streak');
   const [selectedFilter, setSelectedFilter] = useState('Weekly');
 
   const mockData = [
-    { rank: 1, username: 'ALLMIX', points: 236 },
-    { rank: 2, username: 'VIKINGZ', points: 192 },
-    { rank: 3, username: 'BETKING', points: 174 },
-    { rank: 4, username: 'SKYBET', points: 160 },
-    { rank: 5, username: 'ZULU', points: 148 },
-    { rank: 6, username: 'ALLMIX', points: 236 },
-    { rank: 7, username: 'VIKINGZ', points: 192 },
-    { rank: 8, username: 'BETKING', points: 174 },
-    { rank: 9, username: 'SKYBET', points: 160 },
-    { rank: 10, username: 'ZULU', points: 148 },
+    { rank: 1, username: 'ALLMIX', points: 236, streaks: 7 },
+    { rank: 2, username: 'VIKINGZ', points: 192, streaks: 13 },
+    { rank: 3, username: 'BETKING', points: 174, streaks: 8 },
+    { rank: 4, username: 'SKYBET', points: 160, streaks: 25 },
+    { rank: 5, username: 'ZULU', points: 148, streaks: 9 },
+    { rank: 6, username: 'ALLMIX', points: 236, streaks: 11 },
+    { rank: 7, username: 'VIKINGZ', points: 192, streaks: 19 },
+    { rank: 8, username: 'BETKING', points: 174, streaks: 8 },
+    { rank: 9, username: 'SKYBET', points: 160, streaks: 9 },
+    { rank: 10, username: 'ZULU', points: 148, streaks: 17 },
   ];
 
   return (
@@ -34,7 +35,11 @@ export default function LeadersScreen() {
       <ThemedView style={
         styles.container
       }>
-      <StreakTabs />
+
+      <StreakTabs 
+       selected={selectedTab}
+       onSelect={(value) => setSelectedTab(value as 'streak' | 'win')}
+      />
 
       <CustomButtonGroup
         options={['Weekly', 'Monthly', 'Lifetime']}
@@ -42,19 +47,21 @@ export default function LeadersScreen() {
         onSelect={setSelectedFilter}
       />
 
-      <ScrollView style={{ flex: 1, paddingHorizontal: 16, marginTop: 12 }}>
-        {mockData.map((item) => (
-          <LeaderboardItem
-            key={item.rank}
-            rank={item.rank}
-            username={item.username}
-            points={item.points}
-          />
-        ))}
-      </ScrollView>
-      </ThemedView>
+    <ScrollView style={{ flex: 1, marginTop: 12 }}>
+      {mockData.map((item) => (
+        <LeaderboardItem
+          key={`${item.rank}-${selectedTab}`}
+          rank={item.rank}
+          username={item.username}
+          value={selectedTab === 'streak' ? item.streaks : item.points}
+          label={selectedTab === 'streak' ? 'Streaks' : 'Points'}
+        />
+    ))}
+    </ScrollView>
 
-      <NavigationTabs currentScreen={"leaders"} />
+    </ThemedView>
+
+    <NavigationTabs currentScreen={"leaders"} />
     </>
   );
 }
@@ -63,7 +70,7 @@ const styles = StyleSheet.create ({
     container: {
         flex: 1,
         gap: 5,
-        padding: 16,
+        padding: 10,
         paddingTop: 5,
         paddingBottom: 83,
     },

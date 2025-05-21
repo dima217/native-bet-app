@@ -1,28 +1,36 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Heart } from 'lucide-react-native';
 import CustomAvatar from './ui/CustomAvatar';
+import Flag from '../assets/images/united-states 1.svg';
 
 export default function LeaderboardItem({
   rank,
   avatar,
   username,
-  points,
+  value,
+  label,
 }: {
   rank: number;
   avatar?: string;
   username: string;
-  points: number;
+  value: number;
+  label: string;
 }) {
   return (
     <View style={styles.container}>
       <Text style={styles.rank}>{rank}</Text>
 
-      <CustomAvatar size={32} />
+      <View style={styles.flag}>
+        <Flag width={16} height={11} />
+      </View>
+
+      <CustomAvatar size={32}/>
 
       <Text style={styles.username}>{username}</Text>
 
-      <View style={styles.pointsContainer}>
-        <Text style={styles.points}>{points} gg</Text>
+      <View style={styles.valueSection}>
+        <Text style={styles.value}>{value}</Text>
+        <Text style={styles.label}>{label}</Text>
       </View>
 
       <TouchableOpacity style={styles.heart}>
@@ -37,10 +45,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#13141A',
     borderRadius: 12,
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 4,
+  },
+  flag: {
+    marginRight: 10,
   },
   rank: {
     color: '#fff',
@@ -56,12 +67,21 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     fontWeight: '600',
   },
-  pointsContainer: {
+  valueSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
     marginRight: 12,
   },
-  points: {
+  value: {
+    marginRight: 7,
     color: '#fff',
-    fontSize: 15,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  label: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: 2,
   },
   heart: {
     padding: 4,

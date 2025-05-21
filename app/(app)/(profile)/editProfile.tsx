@@ -94,11 +94,11 @@ export default function EditProfileScreen() {
           rules={{
             minLength: {
               value: 2,
-              message: 'Name must be at least 2 characters'
+              message: 'Name must be at least 4 characters'
             },
             maxLength: {
-              value: 50,
-              message: 'Name cannot exceed 50 characters'
+              value: 25,
+              message: 'Name cannot exceed 25 characters'
             },
             pattern: {
               value: /^[\p{L}\s'-.]{2,50}$/u,

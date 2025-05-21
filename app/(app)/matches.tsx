@@ -26,53 +26,70 @@ import { isToday, isTomorrow, isThisWeek } from 'date-fns';
 export default function MatchesScreen() {
   const { user } = useAuth();
   const { matches, loading, error, refreshMatches } = useMatches();
+
   const [selectedFilter, setSelectedFilter] = useState('Today');
   const [selectedGameId, setSelectedGameId] = useState<SportType>(SportType.LOL);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [matchesPerPage, setMatchesPerPage] = useState(20);
+  const [visibleMatches, setVisibleMatches] = useState<Match[]>([]);
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+  const batchSize = 15;
 
   const tabTranslateY = useRef(new Animated.Value(0)).current;
   const tabOpacity = useRef(new Animated.Value(1)).current;
-
   const lastOffsetY = useRef(0);
 
   useEffect(() => {
-    if (user) refreshMatches(); 
+    if (user) refreshMatches();
   }, [user, refreshMatches]);
 
-  const filteredMatches = matches.filter((match) => {
-    const matchDate = new Date(match.beginAt);
-    const isDateMatch = (() => {
-      switch (selectedFilter) {
-        case 'Today':
-          return isToday(matchDate);
-        case 'Tomorrow':
-          return isTomorrow(matchDate);
-        case 'This week':
-          return isThisWeek(matchDate, { weekStartsOn: 1 });
-        default:
-          return true;
-      }
-    })();
+  const getFilteredMatches = (allMatches: Match[]) => {
+    return allMatches.filter((match) => {
+      const matchDate = new Date(match.beginAt);
+      const isDateMatch = (() => {
+        switch (selectedFilter) {
+          case 'Today':
+            return isToday(matchDate);
+          case 'Tomorrow':
+            return isTomorrow(matchDate);
+          case 'This week':
+            return isThisWeek(matchDate, { weekStartsOn: 1 });
+          default:
+            return true;
+        }
+      })();
 
-    return isDateMatch && match.sportType === selectedGameId;
-  });
+      return isDateMatch && match.sportType === selectedGameId;
+    });
+  };
 
-  // Paginate filtered matches
-  const totalPages = Math.max(1, Math.ceil(filteredMatches.length / matchesPerPage));
-  const safePage = Math.min(currentPage, totalPages); 
-  const startIdx = (safePage - 1) * matchesPerPage;
-  const paginatedMatches = filteredMatches.slice(startIdx, startIdx + matchesPerPage);
+  useEffect(() => {
+    const filtered = getFilteredMatches(matches);
+    const initialBatch = filtered.slice(0, batchSize);
+    setVisibleMatches(initialBatch);
+  }, [matches, selectedFilter, selectedGameId]);
 
+  const loadMoreMatches = () => {
+    if (loadMoreLoading) return;
+
+    const filtered = getFilteredMatches(matches);
+    const currentLength = visibleMatches.length;
+
+    if (currentLength >= filtered.length) return;
+
+    setLoadMoreLoading(true);
+
+    const nextBatch = filtered.slice(currentLength, currentLength + batchSize);
+    setTimeout(() => {
+      setVisibleMatches((prev) => [...prev, ...nextBatch]);
+      setLoadMoreLoading(false);
+    }, 500); 
+  };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
     if (offsetY > lastOffsetY.current + 10) {
-      // Scroll down
       Animated.timing(tabTranslateY, {
         toValue: 100,
         duration: 200,
@@ -84,7 +101,6 @@ export default function MatchesScreen() {
         useNativeDriver: true,
       }).start();
     } else if (offsetY < lastOffsetY.current - 10) {
-      // Scroll up
       Animated.timing(tabTranslateY, {
         toValue: 0,
         duration: 200,
@@ -98,12 +114,6 @@ export default function MatchesScreen() {
     }
 
     lastOffsetY.current = offsetY;
-  };
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
   };
 
   return (
@@ -130,7 +140,7 @@ export default function MatchesScreen() {
           </View>
         ) : (
           <FlatList
-            data={paginatedMatches}
+            data={visibleMatches}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <MatchCard match={item} onPress={() => setSelectedMatch(item)} />
@@ -144,31 +154,15 @@ export default function MatchesScreen() {
             }
             onScroll={handleScroll}
             scrollEventThrottle={16}
+            onEndReached={loadMoreMatches}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              loadMoreLoading ? (
+                <ThemedText style={{ textAlign: 'center', padding: 10 }}>Loading more...</ThemedText>
+              ) : null
+            }
           />
         )}
-
-        {/* Pagination Controls */}
-        <View style={styles.pagination}>
-          <TouchableOpacity
-            style={[styles.pageButton, { opacity: currentPage === 1 ? 0.5 : 1 }]}
-            disabled={currentPage === 1}
-            onPress={() => handlePageChange(currentPage - 1)}
-          >
-            <ThemedText style={styles.pageText}>Previous</ThemedText>
-          </TouchableOpacity>
-
-          <ThemedText style={styles.pageText}>
-            Page {currentPage} of {totalPages}
-          </ThemedText>
-
-          <TouchableOpacity
-            style={[styles.pageButton, { opacity: currentPage === totalPages ? 0.5 : 1 }]}
-            disabled={currentPage === totalPages}
-            onPress={() => handlePageChange(currentPage + 1)}
-          >
-            <ThemedText style={styles.pageText}>Next</ThemedText>
-          </TouchableOpacity>
-        </View>
 
         <Animated.View
           style={[
@@ -190,7 +184,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    paddingTop: 5,
   },
   detailsWrapper: {
     position: 'absolute',
@@ -201,7 +194,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   list: {
-    paddingBottom: 24,
+    paddingTop: 60,
+    paddingBottom: 70,
   },
   empty: {
     textAlign: 'center',
@@ -209,23 +203,14 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   button: {
-    marginVertical: 10,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    position: 'absolute',
+    top: 85, 
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: '#090C15', 
     paddingVertical: 10,
     paddingHorizontal: 10,
-  },
-  pageButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-  },
-  pageText: {
-    color: 'white',
   },
   navigationWrapper: {
     position: 'absolute',

@@ -29,22 +29,22 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
   const tabs = [
     {
       key: 'matches',
-      iconActive: <TrophyActive width={28} height={28} />,
-      iconInactive: <TrophyInactive width={28} height={28} />,
+      iconActive: <SwordsActive width={28} height={28} />,
+      iconInactive: <SwordsInactive width={28} height={28} />,
       route: '/(app)/matches',
       label: 'Play',
     },
     {
       key: 'bets',
-      iconActive: <SwordsActive width={28} height={28} />,
-      iconInactive: <SwordsInactive width={28} height={28} />,
+      iconActive: <BurgerActive width={28} height={28} />,
+      iconInactive: <BurgerInactive width={28} height={28} />,
       route: '/(app)/bets',
       label: 'My votes',
     },
     {
       key: 'leaders',
-      iconActive: <BurgerActive width={28} height={28} />,
-      iconInactive: <BurgerInactive width={28} height={28} />,
+      iconActive: <TrophyActive width={28} height={28} />,
+      iconInactive: <TrophyInactive width={28} height={28} />,
       route: '/(app)/leaders',
       label: 'Leaders',
     },

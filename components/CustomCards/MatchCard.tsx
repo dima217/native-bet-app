@@ -25,7 +25,7 @@ export default function MatchCard({ match, onPress }: { match: Match, onPress: (
         )}
 
         <View style={styles.header}>
-          <ThemedText type="subtitle" style={styles.sportTitle}>
+          <ThemedText type="sfMedium" style={styles.sportTitle}>
             {match.league}
           </ThemedText>
         </View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   votedBadge: {
     position: 'absolute',
     top: 5,
-    left: 10,
+    left: 8,
     zIndex: 2,
     backgroundColor: 'transparent',
     borderWidth: 1,

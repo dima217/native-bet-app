@@ -79,12 +79,23 @@ export default function ProfileRegScreen() {
         {error && <ThemedText style={styles.error}>{error}</ThemedText>}
 
         <CustomInput
-          control={control}
-          placeholder="Username"
-          name="username"
-          rules={{ required: 'Name is required' }}
-          error={getErrorMessage(errors.username)}
-        />
+         control={control}
+         placeholder="Username"
+         name="username"
+         rules={{
+            required: 'Username is required',
+            minLength: { value: 4, message: 'At least 4 characters' },
+            maxLength: {
+              value: 25,
+              message: 'Name cannot exceed 25 characters'
+            },
+            pattern: {
+            value: /^[A-Za-z]+$/,
+            message: 'Only letters are allowed (no numbers or special characters)',
+          },
+       }}
+      error={getErrorMessage(errors.username)}
+      />
 
         <CustomInput
           control={control}
