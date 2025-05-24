@@ -79,8 +79,7 @@ export default function RegisterScreen() {
 
     </ThemedView>
     <TouchableOpacity 
-        //onPress={() => router.replace('/(auth)/login')}
-        onPress={() => console.log('test')}
+        onPress={() => router.push('/(auth)/terms')}
         style={styles.linkContainer}
       >
         <ThemedText style={styles.linkText}>

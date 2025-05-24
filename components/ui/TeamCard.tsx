@@ -28,11 +28,14 @@ export default function TeamCard({ team, image, index = 1, selected, selectable,
       ]}
     >
       <ThemedText style={styles.teamName} type='teamCard'>{team}</ThemedText>
-      {image ? (
-        <SkiaAvatar uri={image} size={28} />
-      ) : (
-        <Swords height={24} width={24} />
-      )}
+        {image ? (
+       <View style={styles.avatarWrapper}>
+      <SkiaAvatar uri={image} size={28} />
+       </View>
+       ) : (
+      <Swords height={24} width={24} />
+     )}
+
     </View>
   );
 
@@ -52,6 +55,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flex: 1,
   },
+  avatarWrapper: {
+    backgroundColor: '#484848', 
+    padding: 6,
+    borderRadius: 9999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
   teamContainer: {
     height: 65,
     backgroundColor: 'transparent',

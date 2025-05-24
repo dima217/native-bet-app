@@ -17,22 +17,26 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = Colors.colors.text;
-
-  useFonts({
-    'SFProText-Regular': require('../../assets/fonts/SFProText-Regular.ttf'),
+  const [fontsLoaded] = useFonts({
+    'SFProText-Medium': require('../../assets/fonts/SFProText-Medium.ttf'),
   });
+
+  if (!fontsLoaded) {
+    return null; 
+  }
+
+  const color = Colors.colors.text;
 
   return (
     <Text
       style={[
         { color },
-        type === 'teamCard' ? styles.teamCard : undefined,
-        type === 'default' ? styles.default : undefined,
-        type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-        type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
+        type === 'teamCard' && styles.teamCard,
+        type === 'default' && styles.default,
+        type === 'title' && styles.title,
+        type === 'defaultSemiBold' && styles.defaultSemiBold,
+        type === 'subtitle' && styles.subtitle,
+        type === 'link' && styles.link,
         type === 'sfMedium' && styles.sfMedium,
         style,
       ]}
@@ -40,6 +44,7 @@ export function ThemedText({
     />
   );
 }
+
 
 const styles = StyleSheet.create({
   teamCard: {
@@ -71,8 +76,8 @@ const styles = StyleSheet.create({
     color: '#0a7ea4',
   },
   sfMedium: {
-    fontFamily: 'SFProText-Regular',
-    fontSize: 16,
+    fontFamily: 'SFProText-Medium',
+    fontSize: 14,
     lineHeight: 24,
     color: '#959595',
   },

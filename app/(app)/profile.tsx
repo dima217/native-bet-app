@@ -32,8 +32,8 @@ export default function ProfileScreen() {
 
         <ThemedView style={[styles.container, { backgroundColor }]}>
           <View style={styles.infoContainer}>
-            <ThemedText style={styles.info}>{user?.username}</ThemedText>
-            <ThemedText style={styles.info}>{user?.email}</ThemedText>
+            <ThemedText style={styles.infoName} type='sfMedium'>{user?.username}</ThemedText>
+            <ThemedText style={styles.info} type='sfMedium'>{user?.email}</ThemedText>
           </View>
 
           <CustomButton
@@ -96,5 +96,9 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 16,
     color: '#666',
+  },
+  infoName: {
+    fontSize: 20,
+    color: '#fff',
   },
 });
