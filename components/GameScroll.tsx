@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ui/ThemedText';
 import LeagueOfLegendsIcon from '../assets/images/Group.svg';
 import CounterStrikeIcon from '../assets/images/CS logo.svg';
@@ -26,36 +26,39 @@ export default function GamesScroll({
   onSelect: (id: SportType) => void;
 }) {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
-      {games.map((game) => (
-        <TouchableOpacity
-          key={game.id}
-          style={[
-            styles.item,
-            selectedGame === game.id && styles.selectedTitle
-          ]}
-          onPress={() => onSelect(game.id)}
-        >
-          <game.Icon width={40} height={40} />
-          <ThemedText
-            style={[
-              styles.title
-            ]}
-          >
-            {game.name}
-          </ThemedText>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+    <View style={styles.wrapper}>
+      <FlatList
+        data={games}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+        renderItem={({ item }) => {
+          const isSelected = selectedGame === item.id;
+          return (
+            <TouchableOpacity
+              style={[styles.item, isSelected && styles.selectedTitle]}
+              onPress={() => onSelect(item.id)}
+            >
+              <item.Icon width={40} height={40} />
+              <ThemedText style={styles.title}>{item.name}</ThemedText>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
+    height: 60,
     marginTop: 10,
     marginBottom: 30,
-    height: 60,
-    paddingHorizontal: 10
+  },
+  container: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
   },
   item: {
     flexDirection: 'row',

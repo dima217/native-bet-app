@@ -5,7 +5,9 @@ import { useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 
 export default function SettingsScreen() {
-    const [isEnabled, setIsEnabled] = useState(true);
+    const [isEnabledNotifications, setIsNotificationsEnabled] = useState(true);
+    const [isEnabledMatchNotifications, setIsMatchNotificationsEnabled] = useState(true);
+    const [isEnabledMusic, setIsMusicEnabled ] = useState(true);
 
     return (
     <>
@@ -19,15 +21,15 @@ export default function SettingsScreen() {
     <View style={styles.switchContainer}>
       <View style={styles.wrapper}>
         <ThemedText style={styles.label}>Notifications </ThemedText>
-        <CustomSwitch value={isEnabled} onValueChange={setIsEnabled} />
+        <CustomSwitch value={isEnabledNotifications} onValueChange={setIsNotificationsEnabled} />
       </View>
       <View style={styles.wrapper}>
         <ThemedText style={styles.label}>Match notifications </ThemedText>
-        <CustomSwitch value={isEnabled} onValueChange={setIsEnabled} />
+        <CustomSwitch value={isEnabledMatchNotifications} onValueChange={setIsMatchNotificationsEnabled} />
       </View>
       <View style={styles.wrapper}>
         <ThemedText style={styles.label}>Music</ThemedText>
-        <CustomSwitch value={isEnabled} onValueChange={setIsEnabled} />
+        <CustomSwitch value={isEnabledMusic} onValueChange={setIsMusicEnabled} />
       </View>
     </View>
     </>

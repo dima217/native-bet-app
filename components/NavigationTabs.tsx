@@ -45,7 +45,7 @@ export default function NavigationTabs({ currentScreen }: { currentScreen: Tab }
       key: 'leaders',
       iconActive: <TrophyActive width={28} height={28} />,
       iconInactive: <TrophyInactive width={28} height={28} />,
-      route: '/(app)/leaders',
+      route: '/(app)/underconstr',
       label: 'Leaders',
     },
     {

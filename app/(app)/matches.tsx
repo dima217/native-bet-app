@@ -145,7 +145,9 @@ export default function MatchesScreen() {
             renderItem={({ item }) => (
               <MatchCard match={item} onPress={() => setSelectedMatch(item)} />
             )}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={[
+              styles.list
+            ]}            
             refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshMatches} />}
             ListEmptyComponent={
               <ThemedText style={styles.empty}>
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   list: {
-    paddingTop: 60,
+    paddingTop: 45,
     paddingBottom: 70,
   },
   empty: {
@@ -204,7 +206,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    top: 85, 
+    top: 80, 
     left: 0,
     right: 0,
     zIndex: 10,

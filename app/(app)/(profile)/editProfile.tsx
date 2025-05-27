@@ -11,6 +11,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useState } from "react";
 import { Image as RNImage } from "react-native";
 import { API_URL } from "@/config";
+import api from "@/api/api";
 
 type FormData = {
   username: string;
@@ -50,7 +51,7 @@ export default function EditProfileScreen() {
           type: 'image/jpeg',
         } as any);
 
-        const response = await axios.post('/image/upload', formData, {
+        const response = await api.post('/image/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -59,7 +60,7 @@ export default function EditProfileScreen() {
         avatarUrl = response.data.avatarUrl;
       }
 
-      await axios.put('/users/profile/update', {
+      await api.put('/users/profile/update', {
         username: data.username,
         avatarUrl,
       });

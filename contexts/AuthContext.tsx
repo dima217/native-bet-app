@@ -6,6 +6,7 @@ import { storeToken, getToken, removeToken } from '../utils/storage';
 import { API_URL } from '../config';
 import { User } from '../types/types';
 import { usePathname } from 'expo-router';
+import Toast from 'react-native-toast-message';
 
 type AuthContextType = {
   user: User | null;
@@ -42,21 +43,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     axios.defaults.baseURL = API_URL;
   }, []);
 
-
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
       response => response,
       async error => {
-        if (error.response?.status === 401) {
-          await logout();
-          router.replace('/(auth)/register');
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            await logout();
+            router.replace('/(auth)/register');
+          } else if (!error.response) {
+            Toast.show({
+              type: 'internetError',
+              text1: 'No internet',
+              text2: 'check your network connection',
+            });
+          }
+        } else {
+          setError('Unexpected error');
         }
         return Promise.reject(error);
       }
     );
-    
-    return () => axios.interceptors.response.eject(interceptor);
-  }, []);
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, [router]);
 
   const resetError = useCallback(() => {
     setError(null);
@@ -74,8 +85,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(response.data);
-    } catch (error) {
-      await logout();
+    }  catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          await logout();
+        } else if (!error.response) {
+          setError('No internet connection');
+        }
+      } else {
+        setError('Not authorized');
+      }
     } finally {
       setIsLoading(false);
     }

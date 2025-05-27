@@ -22,6 +22,14 @@ export const toastConfig: ToastConfig = {
       </View>
     </View>
   ),
+  internetError: ({ text1, text2 }) => (
+    <View style={[styles.toastContainer, { backgroundColor: '#D9534F' }]}>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{text1}</Text>
+        {text2 ? <Text style={styles.subtitle}>{text2}</Text> : null}
+      </View>
+    </View>
+  ),
 };
 
 const styles = StyleSheet.create({
