@@ -7,6 +7,7 @@ import { API_URL } from '../config';
 import { User } from '../types/types';
 import { usePathname } from 'expo-router';
 import Toast from 'react-native-toast-message';
+import api from '@/api/api';
 
 type AuthContextType = {
   user: User | null;
@@ -28,6 +29,7 @@ type AuthContextType = {
   forgotPassword: (email: string) => Promise<void>;
   error: string | null;
   resetError: () => void;
+  updateUserBalance: (newBalance: number) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -267,6 +269,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const updateUserBalance = useCallback(async (amount: number) => {
+    try {
+      await api.put('/users/balance/update', { balance: amount });
+  
+      const token = await getToken();
+      const response = await axios.get('/auth/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(response.data);
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : 'Failed to update balance';
+      setError(message);
+      throw new Error(message);
+    }
+  }, []);
+  
   return (
     <AuthContext.Provider
       value={{
@@ -283,6 +303,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         forgotPassword,
         error,
         resetError,
+        updateUserBalance, 
       }}
     >
       {children}

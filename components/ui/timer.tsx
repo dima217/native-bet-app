@@ -1,39 +1,78 @@
-import React, { useEffect } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View } from 'react-native';
 
 type Props = {
   time: number;
-  onTick: React.Dispatch<React.SetStateAction<number>>;
+  showHours?: boolean;
 };
 
-export default function Timer({ time, onTick }: Props) {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      onTick(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+export default function Timer({ time, showHours = false }: Props) {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
 
-    return () => clearInterval(interval);
-  }, [onTick]);
+  const h = hours.toString().padStart(2, '0');
+  const m = minutes.toString().padStart(2, '0');
+  const s = seconds.toString().padStart(2, '0');
 
-  const formatTime = (s: number) => {
-    const min = Math.floor(s / 60).toString().padStart(2, '0');
-    const sec = (s % 60).toString().padStart(2, '0');
-    return `${min}:${sec}`;
-  };
+  if (showHours) {
+    return (
+      <View style={styles.container}>
+        {[{ value: h, label: 'Hours' }, { value: m, label: 'Minutes' }, { value: s, label: 'Seconds' }].map(
+          ({ value, label }, index) => (
+            <View key={index} style={styles.unitBlock}>
+              <View style={styles.timeBox}>
+                <Text style={styles.timeText}>{value}</Text>
+              </View>
+              <Text style={styles.label}>{label}</Text>
+            </View>
+          )
+        )}
+      </View>
+    );
+  }
 
-  return <Text style={styles.timer}>{formatTime(time)}</Text>;
+  return <Text style={styles.simpleTimer}>{`${m}:${s}`}</Text>;
 }
 
+
 const styles = StyleSheet.create({
-  timer: {
+  simpleTimer: {
     marginTop: 10,
     fontSize: 16,
     color: '#555',
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 4,
+  },
+  unitBlock: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 4,
+    height: 75
+  },
+  timeBox: {
+    borderColor: '#484848',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 10,
+    width: '100%',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timeText: {
+    fontSize: 22,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  label: {
+    marginTop: 6,
+    fontSize: 13,
+    color: 'white',
   },
 });

@@ -84,6 +84,10 @@ export default function MatchDetailsCard({
         visibilityTime: 3000,
         position: 'top',
       });
+
+      setTimeout(() => {
+        router.push('/(app)/get-coins');
+      }, 3000);
     }
   };
 

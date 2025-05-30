@@ -7,15 +7,24 @@ import { toastConfig } from '@/components/ui/Toasts/CustomToasts';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
+import { useCooldownStore } from '../utils/useCooldownStore'
 
 export default function RootLayout() {
 
+  const tick = useCooldownStore((s) => s.tick);
+
   useEffect(() => {
     if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync('transparent')
+      NavigationBar.setBackgroundColorAsync('transparent');
       NavigationBar.setButtonStyleAsync('light');
-      NavigationBar.setBehaviorAsync('overlay-swipe'); 
+      NavigationBar.setBehaviorAsync('overlay-swipe');
     }
+
+    const interval = setInterval(() => {
+      tick();
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
